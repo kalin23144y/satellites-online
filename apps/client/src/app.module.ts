@@ -5,6 +5,7 @@ import { ConfigModule } from "./common/config/config.module";
 import { ConfigService } from "./common/config/config.service";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { UserAuthModule } from "./service/auth/auth.module";
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { AppService } from "./app.service";
         }
         };
       }
-    })
+    }),
+    UserAuthModule
   ],
   controllers: [AppController],
   providers: [AppService]

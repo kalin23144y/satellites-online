@@ -1,9 +1,7 @@
 {
   "name": "@libs/database",
-  "version": "0.0.1",
-  "private": true,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": "./src/index.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "prisma:generate": "prisma generate",

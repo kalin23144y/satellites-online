@@ -7,6 +7,6 @@ export class AppController {
 
   @Get("/ping")
   ping(): { success: boolean } {
-    return this.appService.ping()
+    return this.appService.ping();
   }
 }
