@@ -27,3 +27,13 @@ export type Admin = Prisma.AdminModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Satellite
+ * 
+ */
+export type Satellite = Prisma.SatelliteModel
+/**
+ * Model TleRecord
+ * 
+ */
+export type TleRecord = Prisma.TleRecordModel
