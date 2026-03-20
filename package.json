@@ -1,0 +1,20 @@
+{
+  "name": "nest-pnpm-monorepo",
+  "private": true,
+  "version": "0.0.1",
+  "packageManager": "pnpm@10.6.0",
+  "scripts": {
+    "dev": "pnpm --filter @apps/api dev",
+    "build": "pnpm --filter @libs/database build && pnpm --filter @libs/auth build && pnpm --filter @apps/api build",
+    "start": "pnpm --filter @apps/api start",
+    "db:generate": "pnpm --filter @libs/database exec prisma generate",
+    "db:migrate": "pnpm --filter @libs/database exec prisma migrate dev",
+    "db:status": "pnpm --filter @libs/database exec prisma migrate status",
+    "db:reset": "pnpm --filter @libs/database exec prisma migrate reset --force",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
