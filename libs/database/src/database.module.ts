@@ -1,6 +1,6 @@
 import { DynamicModule, FactoryProvider, Global, Module } from "@nestjs/common";
 import { DATABASE_MODULE_OPTIONS } from "./database.constants";
-import {
+import type {
   DatabaseModuleAsyncOptions,
   DatabaseModuleOptions
 } from "./database.interfaces";

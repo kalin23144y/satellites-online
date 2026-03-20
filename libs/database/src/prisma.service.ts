@@ -7,7 +7,7 @@ import {
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client";
 import { DATABASE_MODULE_OPTIONS } from "./database.constants";
-import { DatabaseModuleOptions } from "./database.interfaces";
+import type { DatabaseModuleOptions } from "./database.interfaces";
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {

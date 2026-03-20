@@ -1,11 +1,11 @@
-import { DynamicModule, FactoryProvider, Module } from "@nestjs/common";
+import { DynamicModule, FactoryProvider, Global, Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { AUTH_MODULE_OPTIONS } from "./auth.constants";
-import { AuthModuleAsyncOptions, AuthModuleOptions } from "./auth.interfaces";
+import type { AuthModuleAsyncOptions, AuthModuleOptions } from "./auth.interfaces";
 import { AuthService } from "./auth.service";
 import { JwtAuthGuard } from "./jwt-auth.guard";
-import { JwtStrategy } from "./jwt.strategy";
 
+@Global()
 @Module({})
 export class AuthModule {
   static forRootAsync(options: AuthModuleAsyncOptions): DynamicModule {
@@ -21,8 +21,6 @@ export class AuthModule {
       module: AuthModule,
       imports: [
         ...(options.imports ?? []),
-        // JwtModule is a separate module — it cannot inject AUTH_MODULE_OPTIONS from AuthModule.
-        // Reuse the same async factory + inject as forRootAsync.
         JwtModule.registerAsync({
           imports: options.imports ?? [],
           inject: options.inject ?? [],
@@ -48,7 +46,7 @@ export class AuthModule {
           }
         })
       ],
-      providers: [optionsProvider, AuthService, JwtStrategy, JwtAuthGuard],
+      providers: [optionsProvider, AuthService, JwtAuthGuard],
       exports: [AuthService, JwtAuthGuard]
     };
   }

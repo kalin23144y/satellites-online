@@ -1,7 +1,7 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { AUTH_MODULE_OPTIONS } from "./auth.constants";
-import { AuthModuleOptions, JwtPayload } from "./auth.interfaces";
+import type { AuthModuleOptions, JwtPayload } from "./auth.interfaces";
 
 @Injectable()
 export class AuthService {
@@ -21,13 +21,20 @@ export class AuthService {
 
   async validateToken(token: string): Promise<JwtPayload> {
     try {
-      return await this.jwtService.verifyAsync<JwtPayload>(token, {
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
         secret: this.options.secret,
         issuer: this.options.issuer,
         audience: this.options.audience
       });
-    } catch {
-      throw new UnauthorizedException("Invalid or expired JWT token");
+      if (!payload?.sub || !payload?.login || !payload?.role) {
+        throw new UnauthorizedException("Некорректное содержимое JWT");
+      }
+      return payload;
+    } catch (e) {
+      if (e instanceof UnauthorizedException) {
+        throw e;
+      }
+      throw new UnauthorizedException("Недействительный или просроченный токен");
     }
   }
 }
