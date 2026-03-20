@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  UnauthorizedException
-} from "@nestjs/common";
+import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "@libs/auth";
 import type { JwtPayload } from "@libs/auth";
 import { PrismaService } from "@libs/database";
@@ -27,7 +23,7 @@ export class UserAuthService {
 
   async register(dto: RegisterDto): Promise<{ accessToken: string; user: AuthUserView }> {
     const existing = await this.prisma.user.findUnique({
-      where: { login: dto.login }
+      where: { login: dto.username }
     });
     if (existing) {
       throw new ConflictException("Пользователь с таким логином уже существует");
@@ -37,7 +33,7 @@ export class UserAuthService {
 
     const user = await this.prisma.user.create({
       data: {
-        login: dto.login,
+        login: dto.username,
         password: passwordHash
       }
     });

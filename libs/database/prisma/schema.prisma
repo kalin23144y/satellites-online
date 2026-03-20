@@ -13,16 +13,17 @@ model Admin {
   password String
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model User {
   id       String @id @default(uuid()) @db.Uuid
   login    String @unique
   password String
+  name     String
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Satellite {

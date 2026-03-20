@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards
+} from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiBody,
@@ -34,6 +42,15 @@ export class AuthController {
   async login(@Body() dto: LoginDto) {
     return this.userAuth.login(dto);
   }
+
+  @Post("logout")
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth("access-token")
+  @ApiOperation({ summary: "Выход (удалите токен на клиенте)" })
+  @ApiResponse({ status: 204, description: "Успешный выход" })
+  @ApiResponse({ status: 401, description: "Нет или невалидный токен" })
+  logout() {}
 
   @Get("me")
   @UseGuards(JwtAuthGuard)

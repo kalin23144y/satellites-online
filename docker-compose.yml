@@ -1,28 +1,12 @@
 services:
-  deploy:
-    build:
-      context: .
-      dockerfile: ./libs/db/Dockerfile
-    container_name: satellites-deploy-${APP_TYPE:-dev}
-    env_file: .env
-    environment:
-      DATABASE_URL_ACCOUNT: ${DATABASE_URL_ACCOUNT}
-      DATABASE_URL_ADMIN: ${DATABASE_URL_ADMIN}
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - app-network
-    restart: "no"
-
 
   db:
     image: postgres:17-alpine
     container_name: satellites-postgres-${APP_TYPE:-dev}
     environment:
       POSTGRES_USER: ${DATABASE_USER:-postgres}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME_ACCOUNT:-account}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_DB: ${DATABASE_NAME:-db}
     ports:
       - "${DATABASE_PORT:-5432}:5432"
     volumes:
