@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./libs/auth" },
+    { "path": "./libs/database" },
+    { "path": "./apps/client" }
+  ]
+}

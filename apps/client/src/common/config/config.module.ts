@@ -7,7 +7,6 @@ import { ConfigService } from './config.service'
 	imports: [
 		NestConfigModule.forRoot({
 			isGlobal: true,
-			// Support running from workspace root and from app folder
 			envFilePath: ['../../.env', '.env'],
 		}),
 	],

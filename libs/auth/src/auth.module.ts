@@ -21,16 +21,31 @@ export class AuthModule {
       module: AuthModule,
       imports: [
         ...(options.imports ?? []),
+        // JwtModule is a separate module — it cannot inject AUTH_MODULE_OPTIONS from AuthModule.
+        // Reuse the same async factory + inject as forRootAsync.
         JwtModule.registerAsync({
-          inject: [AUTH_MODULE_OPTIONS],
-          useFactory: (authOptions: AuthModuleOptions) => ({
-            secret: authOptions.secret,
+          imports: options.imports ?? [],
+          inject: options.inject ?? [],
+          useFactory: async (
+            ...args: any[]
+          ): Promise<{
+            secret: string;
             signOptions: {
-              issuer: authOptions.issuer,
-              audience: authOptions.audience,
-              expiresIn: authOptions.expiresIn ?? "1h"
-            }
-          })
+              issuer?: string;
+              audience?: string;
+              expiresIn: AuthModuleOptions["expiresIn"];
+            };
+          }> => {
+            const authOptions = await options.useFactory(...args);
+            return {
+              secret: authOptions.secret,
+              signOptions: {
+                issuer: authOptions.issuer,
+                audience: authOptions.audience,
+                expiresIn: authOptions.expiresIn ?? "1h"
+              }
+            };
+          }
         })
       ],
       providers: [optionsProvider, AuthService, JwtStrategy, JwtAuthGuard],

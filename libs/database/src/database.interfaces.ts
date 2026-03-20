@@ -1,9 +1,14 @@
 import { FactoryProvider, ModuleMetadata } from "@nestjs/common";
 import { Prisma } from "./generated/prisma/client";
 
-type SupportedPrismaClientOptions = Omit<
+/**
+ * Only the options shared by both Prisma connection modes (adapter vs accelerate).
+ * Omitting `adapter`/`accelerateUrl` from the full union still leaves a branch that
+ * requires `accelerateUrl` — use Pick instead.
+ */
+export type SupportedPrismaClientOptions = Pick<
   Prisma.PrismaClientOptions,
-  "adapter" | "accelerateUrl"
+  "log" | "errorFormat" | "transactionOptions" | "omit" | "comments"
 >;
 
 export interface DatabaseModuleOptions {

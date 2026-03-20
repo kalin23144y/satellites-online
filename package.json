@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "packageManager": "pnpm@10.6.0",
   "scripts": {
-    "dev": "pnpm --filter @apps/api dev",
-    "build": "pnpm --filter @libs/database build && pnpm --filter @libs/auth build && pnpm --filter @apps/api build",
-    "start": "pnpm --filter @apps/api start",
+    "client:dev": "pnpm --filter @apps/client run dev",
+    "client:build": "pnpm --filter @apps/client run build",
+    "client:start": "pnpm --filter @apps/client run start",
     "db:generate": "pnpm --filter @libs/database exec prisma generate",
     "db:migrate": "pnpm --filter @libs/database exec prisma migrate dev",
     "db:status": "pnpm --filter @libs/database exec prisma migrate status",
