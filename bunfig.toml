@@ -1,0 +1,3 @@
+# https://bun.sh/docs/cli/bunfig
+[install]
+peer = true
