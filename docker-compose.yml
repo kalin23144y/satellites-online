@@ -35,8 +35,6 @@ services:
       - app-network
     restart: unless-stopped
 
-
-  
   redis:
     image: redis:7-alpine
     container_name: satellites-redis-${APP_TYPE:-dev}
@@ -80,7 +78,6 @@ services:
       - app-network
     restart: unless-stopped
 
-
   client:
     container_name: satellites-client-${APP_TYPE:-dev}
     build:
@@ -109,6 +106,8 @@ services:
       - "traefik.http.routers.my-app.rule=Host(`back.thecreatorq.ru`)"
       - "traefik.http.routers.my-app.entrypoints=websecure"
       - "traefik.http.routers.my-app.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.purldb_https.tls=true"
+      - "traefik.http.routers.purldb_https.tls.certresolver=resolver"
     networks:
       - app-network
       - webnet
@@ -142,7 +141,6 @@ networks:
   webnet:
     external:
       name: traefic_webnet
-
 
 volumes:
   postgres_data:
