@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Admin: 'Admin',
   User: 'User',
+  File: 'File',
   Satellite: 'Satellite',
   TleRecord: 'TleRecord'
 } as const
@@ -95,6 +96,16 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const FileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
 export const SatelliteScalarFieldEnum = {
   id: 'id',
   noradId: 'noradId',
@@ -108,7 +119,8 @@ export const SatelliteScalarFieldEnum = {
   periodMin: 'periodMin',
   altitudeKm: 'altitudeKm',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  fileId: 'fileId'
 } as const
 
 export type SatelliteScalarFieldEnum = (typeof SatelliteScalarFieldEnum)[keyof typeof SatelliteScalarFieldEnum]

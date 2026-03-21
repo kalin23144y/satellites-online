@@ -22,7 +22,7 @@ export class ConfigService {
 
   get app() {
     return {
-      port: this.getNumber("APP_CLIENT_PORT", 3001),
+      port: this.getNumber("APP_CLIENT_PORT", 3000),
       corsEnabled: this.getBool("CORS_ENABLED", true),
       env: this.configService.get<string>("APP_TYPE", "dev") === "prod" ? "prod" : "dev"
     };

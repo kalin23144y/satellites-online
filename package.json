@@ -7,6 +7,8 @@
     "client:dev": "pnpm --filter @apps/client run dev",
     "client:build": "pnpm --filter @apps/client run build",
     "client:start": "pnpm --filter @apps/client run start",
+    "worker:dev": "pnpm --filter @apps/worker run dev",
+    "worker:start": "pnpm --filter @apps/worker run start",
     "db:generate": "pnpm --filter @libs/database exec prisma generate",
     "db:migrate": "pnpm --filter @libs/database exec prisma migrate dev",
     "db:status": "pnpm --filter @libs/database exec prisma migrate status",

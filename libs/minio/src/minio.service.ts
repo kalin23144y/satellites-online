@@ -1,12 +1,12 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { Client } from "minio";
 import { MinioKeys } from "./minio.keys";
-import { MINIO_CONFIG, MinioConfig } from "./minio.module";
+import type { MinioConfig } from "./minio-config.type";
 
 @Injectable()
 export class MinioService extends Client implements OnModuleInit {
   constructor(
-    @Inject(MINIO_CONFIG) private readonly minioConfig: MinioConfig
+    @Inject("MINIO_CONFIG") private readonly minioConfig: MinioConfig
   ) {
     super({
       port: minioConfig.port,

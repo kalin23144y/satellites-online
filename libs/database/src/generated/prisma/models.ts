@@ -10,6 +10,7 @@
  */
 export type * from './models/Admin'
 export type * from './models/User'
+export type * from './models/File'
 export type * from './models/Satellite'
 export type * from './models/TleRecord'
 export type * from './commonInputTypes'

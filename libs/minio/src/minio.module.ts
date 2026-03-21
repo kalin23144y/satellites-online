@@ -1,27 +1,14 @@
-import {
-  DynamicModule,
-  FactoryProvider,
-  Global,
-  Module,
-  ModuleMetadata
-} from "@nestjs/common";
+import { DynamicModule, FactoryProvider, Global, Module, ModuleMetadata } from "@nestjs/common";
 
 import { MinioService } from "./minio.service";
+import type { MinioConfig } from "./minio-config.type";
 
-export interface MinioConfig {
-  port: number;
-  accessKey: string;
-  secretKey: string;
-  endPoint: string;
-}
-
-export interface MinioModuleAsyncOptions
-  extends Pick<ModuleMetadata, "imports"> {
+export interface MinioModuleAsyncOptions extends Pick<ModuleMetadata, "imports"> {
   inject?: FactoryProvider["inject"];
   useFactory: (...args: any[]) => Promise<MinioConfig> | MinioConfig;
 }
 
-export const MINIO_CONFIG = Symbol("MINIO_CONFIG");
+export const MINIO_CONFIG = "MINIO_CONFIG";
 
 @Global()
 @Module({})
