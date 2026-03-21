@@ -17,7 +17,8 @@ export class TleService {
   async uploadTleFile(userId: string, file: Express.Multer.File) {
     const createdFile = await this.prisma.file.create({
       data: {
-        userId
+        userId, 
+        name: file.originalname
       },
       select: {
         id: true

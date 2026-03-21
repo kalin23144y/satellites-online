@@ -327,10 +327,10 @@ export type SatelliteOrderByWithRelationInput = {
 
 export type SatelliteWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  noradId?: number
   AND?: Prisma.SatelliteWhereInput | Prisma.SatelliteWhereInput[]
   OR?: Prisma.SatelliteWhereInput[]
   NOT?: Prisma.SatelliteWhereInput | Prisma.SatelliteWhereInput[]
+  noradId?: Prisma.IntFilter<"Satellite"> | number
   name?: Prisma.StringFilter<"Satellite"> | string
   operator?: Prisma.StringNullableFilter<"Satellite"> | string | null
   countryId?: Prisma.UuidNullableFilter<"Satellite"> | string | null
@@ -346,7 +346,7 @@ export type SatelliteWhereUniqueInput = Prisma.AtLeast<{
   country?: Prisma.XOR<Prisma.CountryNullableScalarRelationFilter, Prisma.CountryWhereInput> | null
   tles?: Prisma.TleRecordListRelationFilter
   file?: Prisma.XOR<Prisma.FileNullableScalarRelationFilter, Prisma.FileWhereInput> | null
-}, "id" | "noradId">
+}, "id">
 
 export type SatelliteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
