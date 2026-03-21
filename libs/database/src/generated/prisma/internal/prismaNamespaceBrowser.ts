@@ -55,6 +55,7 @@ export const ModelName = {
   User: 'User',
   File: 'File',
   Satellite: 'Satellite',
+  Satcat: 'Satcat',
   TleRecord: 'TleRecord',
   Country: 'Country'
 } as const
@@ -125,6 +126,29 @@ export const SatelliteScalarFieldEnum = {
 } as const
 
 export type SatelliteScalarFieldEnum = (typeof SatelliteScalarFieldEnum)[keyof typeof SatelliteScalarFieldEnum]
+
+
+export const SatcatScalarFieldEnum = {
+  noradCatId: 'noradCatId',
+  objectName: 'objectName',
+  objectId: 'objectId',
+  objectType: 'objectType',
+  opsStatusCode: 'opsStatusCode',
+  owner: 'owner',
+  launchDate: 'launchDate',
+  launchSite: 'launchSite',
+  decayDate: 'decayDate',
+  period: 'period',
+  inclination: 'inclination',
+  apogee: 'apogee',
+  perigee: 'perigee',
+  rcs: 'rcs',
+  dataStatusCode: 'dataStatusCode',
+  orbitCenter: 'orbitCenter',
+  orbitType: 'orbitType'
+} as const
+
+export type SatcatScalarFieldEnum = (typeof SatcatScalarFieldEnum)[keyof typeof SatcatScalarFieldEnum]
 
 
 export const TleRecordScalarFieldEnum = {

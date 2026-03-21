@@ -388,6 +388,7 @@ export const ModelName = {
   User: 'User',
   File: 'File',
   Satellite: 'Satellite',
+  Satcat: 'Satcat',
   TleRecord: 'TleRecord',
   Country: 'Country'
 } as const
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "user" | "file" | "satellite" | "tleRecord" | "country"
+    modelProps: "admin" | "user" | "file" | "satellite" | "satcat" | "tleRecord" | "country"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -705,6 +706,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Satcat: {
+      payload: Prisma.$SatcatPayload<ExtArgs>
+      fields: Prisma.SatcatFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SatcatFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SatcatFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>
+        }
+        findFirst: {
+          args: Prisma.SatcatFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SatcatFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>
+        }
+        findMany: {
+          args: Prisma.SatcatFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>[]
+        }
+        create: {
+          args: Prisma.SatcatCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>
+        }
+        createMany: {
+          args: Prisma.SatcatCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SatcatCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>[]
+        }
+        delete: {
+          args: Prisma.SatcatDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>
+        }
+        update: {
+          args: Prisma.SatcatUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>
+        }
+        deleteMany: {
+          args: Prisma.SatcatDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SatcatUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SatcatUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>[]
+        }
+        upsert: {
+          args: Prisma.SatcatUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatcatPayload>
+        }
+        aggregate: {
+          args: Prisma.SatcatAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSatcat>
+        }
+        groupBy: {
+          args: Prisma.SatcatGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SatcatGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SatcatCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SatcatCountAggregateOutputType> | number
+        }
+      }
+    }
     TleRecord: {
       payload: Prisma.$TleRecordPayload<ExtArgs>
       fields: Prisma.TleRecordFieldRefs
@@ -944,6 +1019,29 @@ export const SatelliteScalarFieldEnum = {
 export type SatelliteScalarFieldEnum = (typeof SatelliteScalarFieldEnum)[keyof typeof SatelliteScalarFieldEnum]
 
 
+export const SatcatScalarFieldEnum = {
+  noradCatId: 'noradCatId',
+  objectName: 'objectName',
+  objectId: 'objectId',
+  objectType: 'objectType',
+  opsStatusCode: 'opsStatusCode',
+  owner: 'owner',
+  launchDate: 'launchDate',
+  launchSite: 'launchSite',
+  decayDate: 'decayDate',
+  period: 'period',
+  inclination: 'inclination',
+  apogee: 'apogee',
+  perigee: 'perigee',
+  rcs: 'rcs',
+  dataStatusCode: 'dataStatusCode',
+  orbitCenter: 'orbitCenter',
+  orbitType: 'orbitType'
+} as const
+
+export type SatcatScalarFieldEnum = (typeof SatcatScalarFieldEnum)[keyof typeof SatcatScalarFieldEnum]
+
+
 export const TleRecordScalarFieldEnum = {
   id: 'id',
   satelliteId: 'satelliteId',
@@ -1154,6 +1252,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   file?: Prisma.FileOmit
   satellite?: Prisma.SatelliteOmit
+  satcat?: Prisma.SatcatOmit
   tleRecord?: Prisma.TleRecordOmit
   country?: Prisma.CountryOmit
 }

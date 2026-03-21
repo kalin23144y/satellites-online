@@ -67,6 +67,25 @@ model Satellite {
   @@index([orbitClass])
 }
 
+model Satcat {
+  noradCatId Int    @unique
+  objectName String
+  objectId   String
+  objectType     String
+  opsStatusCode  String
+  owner          String
+  launchDate     String
+  launchSite     String
+  decayDate      String
+  period         Int
+  inclination    Int
+  apogee         Int
+  perigee        Int
+  rcs            Float?
+  dataStatusCode String
+  orbitCenter    String
+  orbitType      String
+}
 
 model TleRecord {
   id String @id @default(uuid())
@@ -87,7 +106,7 @@ model TleRecord {
 
 model Country {
   id         String      @id @default(uuid()) @db.Uuid
-  name       String?     
+  name       String?
   code       String      @unique
   color      String
   filePath   String?
@@ -98,4 +117,3 @@ model Country {
 
   @@index([name])
 }
-

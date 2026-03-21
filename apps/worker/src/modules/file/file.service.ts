@@ -40,9 +40,9 @@ export class FileService {
     }
 
     const objectStream = await this.minio.getObject(MinioKeys.tle, `${fileId}.txt`);
-    console.log('objectStream', objectStream)
+    console.log("objectStream", objectStream);
     const fileContent = await this.streamToString(objectStream);
-    console.log('fileContent', fileContent)
+    console.log("fileContent", fileContent);
     const tleRecords = await this.parseTleContent(fileContent);
 
     await this.prisma.tleRecord.deleteMany({
@@ -55,7 +55,7 @@ export class FileService {
       let country: Country | null = null;
       if (record.country) {
         const countryName = record.country?.trim();
-          country = await this.prisma.country.findFirst({
+        country = await this.prisma.country.findFirst({
           where: {
             code: countryName
           }
@@ -72,24 +72,9 @@ export class FileService {
         }
       }
 
-      const satellite = await this.prisma.satellite.upsert({
-        where: {
-          noradId: record.noradId
-        },
-        create: {
+      const satellite = await this.prisma.satellite.create({
+        data: {
           noradId: record.noradId,
-          name: record.name,
-          operator: record.operator,
-          countryId: country && country.id ? country.id : undefined,
-          purpose: record.purpose,
-          groupName: record.groupName,
-          inclination: record.inclination,
-          periodMin: record.periodMin,
-          altitudeKm: record.altitudeKm,
-          orbitClass: record.orbitClass,
-          fileId
-        },
-        update: {
           name: record.name,
           operator: record.operator,
           countryId: country && country.id ? country.id : undefined,

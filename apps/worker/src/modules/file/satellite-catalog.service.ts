@@ -1,9 +1,31 @@
+import { PrismaService } from "@libs/database";
 import { Injectable } from "@nestjs/common";
+import { url } from "inspector";
 
 type SatcatRecord = {
   OBJECT_NAME?: string;
   OBJECT_TYPE?: string;
   OWNER?: string;
+};
+
+type SatcatDto = {
+  OBJECT_NAME: string;
+  OBJECT_ID: string;
+  NORAD_CAT_ID: number;
+  OBJECT_TYPE: string;
+  OPS_STATUS_CODE: string;
+  OWNER: string;
+  LAUNCH_DATE: string;
+  LAUNCH_SITE: string;
+  DECAY_DATE: string;
+  PERIOD: number;
+  INCLINATION: number;
+  APOGEE: number;
+  PERIGEE: number;
+  RCS: number | null;
+  DATA_STATUS_CODE: string;
+  ORBIT_CENTER: string;
+  ORBIT_TYPE: string;
 };
 
 export type SatelliteEnrichment = {
@@ -16,14 +38,12 @@ export type SatelliteEnrichment = {
 
 @Injectable()
 export class SatelliteCatalogService {
+  constructor(private readonly prisma: PrismaService) {}
   private ownerCodeMapPromise?: Promise<Map<string, string>>;
   private readonly satcatCache = new Map<number, Promise<SatcatRecord | null>>();
   private readonly enrichmentCache = new Map<string, Promise<SatelliteEnrichment>>();
 
-  async enrichSatellite(
-    noradId: number,
-    tleName?: string
-  ): Promise<SatelliteEnrichment> {
+  async enrichSatellite(noradId: number, tleName?: string): Promise<SatelliteEnrichment> {
     const cacheKey = `${noradId}:${tleName?.trim() ?? ""}`;
     const cached = this.enrichmentCache.get(cacheKey);
     if (cached) {
@@ -35,10 +55,7 @@ export class SatelliteCatalogService {
     return enrichmentPromise;
   }
 
-  private async loadEnrichment(
-    noradId: number,
-    tleName?: string
-  ): Promise<SatelliteEnrichment> {
+  private async loadEnrichment(noradId: number, tleName?: string): Promise<SatelliteEnrichment> {
     const satcatRecord = await this.fetchSatcatRecord(noradId);
     const ownerDescription = satcatRecord?.OWNER
       ? await this.resolveOwnerDescription(satcatRecord.OWNER)
@@ -65,6 +82,19 @@ export class SatelliteCatalogService {
       return cached;
     }
 
+    const satcat = await this.prisma.satcat.findUnique({
+      where: { noradCatId: noradId }
+    });
+
+    if (satcat) {
+      const satcatPeomise = Promise.resolve({
+        OBJECT_NAME: satcat.objectName,
+        OBJECT_TYPE: satcat.objectType
+      });
+      this.satcatCache.set(noradId, satcatPeomise);
+      return satcatPeomise;
+    }
+
     const recordPromise = this.withRetry(async () => {
       const response = await fetch(
         `https://celestrak.org/satcat/records.php?CATNR=${noradId}&FORMAT=JSON`,
@@ -77,12 +107,74 @@ export class SatelliteCatalogService {
         throw new Error(`SATCAT request failed with status ${response.status}`);
       }
 
-      const payload = (await response.json()) as SatcatRecord[];
-      return payload[0] ?? null;
+      const payload = await this.safeJsonArray(response);
+
+      console.log(payload);
+      return (payload[0] as SatcatRecord | undefined) ?? null;
     });
 
     this.satcatCache.set(noradId, recordPromise);
     return recordPromise;
+  }
+
+  async parsSatcatRecord(limit: number, offset: number) {
+    for (let i = offset; i < offset + limit; i++) {
+      const url = `https://celestrak.org/satcat/records.php?CATNR=${i}&FORMAT=JSON`;
+      console.log(url);
+
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      if (!response.ok) {
+        continue;
+      }
+
+      const rows = await this.safeJsonArray(response);
+      console.log(rows);
+      const row = rows[0] as SatcatDto | undefined;
+      if (!row?.NORAD_CAT_ID) {
+        continue;
+      }
+
+      const exists = await this.prisma.satcat.findUnique({
+        where: { noradCatId: row.NORAD_CAT_ID }
+      });
+      if (exists) {
+        continue;
+      }
+
+      await this.prisma.satcat.create({
+        data: {
+          noradCatId: row.NORAD_CAT_ID,
+          objectName: String(row.OBJECT_NAME),
+          objectId: String(row.OBJECT_ID),
+          objectType: String(row.OBJECT_TYPE),
+          opsStatusCode: String(row.OPS_STATUS_CODE),
+          owner: String(row.OWNER),
+          launchDate: String(row.LAUNCH_DATE),
+          launchSite: String(row.LAUNCH_SITE),
+          decayDate: String(row.DECAY_DATE),
+          period: Number(row.PERIOD) || 0,
+          inclination: Number(row.INCLINATION) || 0,
+          apogee: Number(row.APOGEE) || 0,
+          perigee: Number(row.PERIGEE) || 0,
+          rcs: row.RCS == null ? null : Number(row.RCS),
+          dataStatusCode: String(row.DATA_STATUS_CODE),
+          orbitCenter: String(row.ORBIT_CENTER),
+          orbitType: String(row.ORBIT_TYPE)
+        }
+      });
+    }
+
+    return { success: true };
+  }
+
+  /** Тело ответа не всегда JSON — `response.json()` падает. */
+  private async safeJsonArray(response: Response): Promise<unknown[]> {
+    try {
+      const data = JSON.parse(await response.text());
+      return Array.isArray(data) ? data : [];
+    } catch {
+      return [];
+    }
   }
 
   private async resolveOwnerDescription(ownerCode: string): Promise<string | null> {
@@ -176,9 +268,7 @@ export class SatelliteCatalogService {
       return null;
     }
 
-    return genericPrefix[0]
-      .replace(/[- ]?\d+[A-Z]*$/, "")
-      .trim() || null;
+    return genericPrefix[0].replace(/[- ]?\d+[A-Z]*$/, "").trim() || null;
   }
 
   private inferPurpose({
@@ -203,17 +293,24 @@ export class SatelliteCatalogService {
     }
 
     if (
-      ["STARLINK", "ONEWEB", "IRIDIUM", "GLOBALSTAR", "ORBCOMM", "INTELSAT", "SES", "O3B", "KUIPER", "QIANFAN"].includes(
-        normalizedGroup
-      )
+      [
+        "STARLINK",
+        "ONEWEB",
+        "IRIDIUM",
+        "GLOBALSTAR",
+        "ORBCOMM",
+        "INTELSAT",
+        "SES",
+        "O3B",
+        "KUIPER",
+        "QIANFAN"
+      ].includes(normalizedGroup)
     ) {
       return "Communications";
     }
 
     if (
-      ["GPS", "NAVSTAR", "GALILEO", "GLONASS", "BEIDOU", "QZSS", "IRNSS"].includes(
-        normalizedGroup
-      )
+      ["GPS", "NAVSTAR", "GALILEO", "GLONASS", "BEIDOU", "QZSS", "IRNSS"].includes(normalizedGroup)
     ) {
       return "Navigation";
     }
@@ -236,11 +333,7 @@ export class SatelliteCatalogService {
     return normalizedType === "PAY" ? "Payload" : null;
   }
 
-  private async withRetry<T>(
-    operation: () => Promise<T>,
-    retries = 2,
-    delayMs = 300
-  ): Promise<T> {
+  private async withRetry<T>(operation: () => Promise<T>, retries = 2, delayMs = 300): Promise<T> {
     let lastError: unknown;
 
     for (let attempt = 0; attempt <= retries; attempt += 1) {

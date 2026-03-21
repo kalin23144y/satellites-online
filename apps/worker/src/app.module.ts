@@ -3,6 +3,7 @@ import { DatabaseModule } from "@libs/database";
 import { ConfigService } from "./common/config/config.service";
 import { ConfigModule } from "./common/config/config.module";
 import { FileModule } from "./modules/file/file.module";
+import { CronModule } from "./modules/cron/cron.module";
 import { MinioModule } from "@libs/minio";
 import { BullModule } from "@nestjs/bullmq";
 
@@ -43,7 +44,8 @@ import { BullModule } from "@nestjs/bullmq";
         return config.minio;
       }
     }),
-    FileModule
+    FileModule,
+    CronModule
   ]
 })
 export class AppModule {}

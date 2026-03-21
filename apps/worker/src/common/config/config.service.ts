@@ -79,6 +79,14 @@ export class ConfigService {
     };
   }
 
+  get satcat() {
+    return {
+      count: this.getNumber("SATCAT_COUNT", 68261),
+      take: this.getNumber("SATCAT_TAKE", 100),
+      offset: this.getNumber("SATCAT_OFFSET", 0)
+    };
+  }
+
   get minio(): MinioConfig {
     return {
       accessKey: this.configService.getOrThrow<string>("MINIO_ACCESS_KEY"),

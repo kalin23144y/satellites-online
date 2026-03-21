@@ -62,6 +62,11 @@ export type File = Prisma.FileModel
  */
 export type Satellite = Prisma.SatelliteModel
 /**
+ * Model Satcat
+ * 
+ */
+export type Satcat = Prisma.SatcatModel
+/**
  * Model TleRecord
  * 
  */

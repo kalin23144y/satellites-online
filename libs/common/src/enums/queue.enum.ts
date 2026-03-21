@@ -1,3 +1,4 @@
 export enum QueueEnum {
-  FILE = "file"
+  FILE = "file",
+  SATCAT = "satcat"
 }
