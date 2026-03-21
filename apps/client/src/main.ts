@@ -4,6 +4,7 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { ConfigService } from "./common/config/config.service";
+import { RedisIoAdapter } from "./common/adapter/adapter";
 
 const logger = new Logger("Main");
 
@@ -11,6 +12,11 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
+
+  const redisIoAdapter = new RedisIoAdapter(configService);
+  await redisIoAdapter.connectToRedis();
+
+  app.useWebSocketAdapter(redisIoAdapter);
 
   app.useGlobalPipes(
     new ValidationPipe({

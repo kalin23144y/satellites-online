@@ -76,7 +76,9 @@ export class ConfigService {
 
 	get redis() {
 		return {
-			url: this.configService.getOrThrow<string>('REDIS_URL'),
+			host: this.configService.getOrThrow<string>('REDIS_HOST'),
+			port: this.getNumber('REDIS_PORT', 6379),
+			password: this.configService.getOrThrow<string>('REDIS_PASSWORD'),
 		}
 	}
 

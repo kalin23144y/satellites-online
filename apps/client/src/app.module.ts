@@ -6,6 +6,7 @@ import { ConfigService } from "./common/config/config.service";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { UserAuthModule } from "./service/auth/auth.module";
+import { OrbitCalculationModule } from "./service/orbit-calculation/orbit-calculation.module";
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { UserAuthModule } from "./service/auth/auth.module";
         };
       }
     }),
-    UserAuthModule
+    UserAuthModule,
+    OrbitCalculationModule
   ],
   controllers: [AppController],
   providers: [AppService]
