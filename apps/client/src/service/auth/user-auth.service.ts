@@ -23,7 +23,7 @@ export class UserAuthService {
 
   async register(dto: RegisterDto): Promise<{ accessToken: string; user: AuthUserView }> {
     const existing = await this.prisma.user.findUnique({
-      where: { login: dto.login }
+      where: { login: dto.username }
     });
     if (existing) {
       throw new ConflictException("Пользователь с таким логином уже существует");
@@ -33,7 +33,7 @@ export class UserAuthService {
 
     const user = await this.prisma.user.create({
       data: {
-        login: dto.login,
+        login: dto.username,
         password: passwordHash
       }
     });
@@ -54,7 +54,7 @@ export class UserAuthService {
 
   async login(dto: LoginDto): Promise<{ accessToken: string; user: AuthUserView }> {
     const user = await this.prisma.user.findUnique({
-      where: { login: dto.login }
+      where: { login: dto.username }
     });
 
     if (!user) {
