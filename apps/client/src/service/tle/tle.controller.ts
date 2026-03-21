@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   FileTypeValidator,
   ParseFilePipe,
@@ -29,9 +30,13 @@ export class TleController {
         file: {
           type: "string",
           format: "binary"
+        },
+        name: {
+          type: "string",
+          description: "Имя файлагрузке",
         }
       },
-      required: ["file"]
+      required: ["file", "name"]
     }
   })
   @ApiResponse({
@@ -40,6 +45,7 @@ export class TleController {
   @UseGuards(JwtAuthGuard)
   uploadFile(
     @User() user: JwtPayload,
+    @Body("name") name: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -52,6 +58,6 @@ export class TleController {
     )
     file: Express.Multer.File
   ) {
-    return this.tleService.uploadTleFile(user.sub, file);
+    return this.tleService.uploadTleFile(user.sub, file, name);
   }
 }

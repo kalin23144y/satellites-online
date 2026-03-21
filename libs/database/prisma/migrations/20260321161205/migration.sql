@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "File" ADD COLUMN     "isActive" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "name" TEXT NOT NULL DEFAULT '';

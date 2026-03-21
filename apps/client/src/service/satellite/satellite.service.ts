@@ -146,11 +146,7 @@ export class SatelliteService {
     };
   }
 
-  private buildSatelliteWhere(
-    filters: SatelliteFiltersDto,
-    withTlesOnly = false,
-    userId?: string
-  ) {
+  private buildSatelliteWhere(filters: SatelliteFiltersDto, withTlesOnly = false, userId?: string) {
     const country = filters.country?.trim();
     const type = filters.type?.trim();
     const mission = filters.mission?.trim();
@@ -159,7 +155,8 @@ export class SatelliteService {
       ...(userId
         ? {
             file: {
-              userId
+              userId,
+              isActive: true
             }
           }
         : {}),

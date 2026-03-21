@@ -15,11 +15,12 @@ export class TleService {
     private readonly prisma: PrismaService
   ) {}
 
-  async uploadTleFile(userId: string, file: Express.Multer.File) {
+  async uploadTleFile(userId: string, file: Express.Multer.File, name: string) {
+    const displayName = name?.trim() || file.originalname;
     const createdFile = await this.prisma.file.create({
       data: {
-        userId, 
-        name: file.originalname
+        userId,
+        name: displayName
       },
       select: {
         id: true
@@ -119,6 +120,7 @@ export class TleService {
       ...(userId
         ? {
             file: {
+              isActive: true,
               userId
             }
           }

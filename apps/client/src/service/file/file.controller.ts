@@ -1,10 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from "@nestjs/common";
 import { FileService } from "./file.service";
-import { ApiResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiResponse } from "@nestjs/swagger";
 import { FileResponseDto, GetFilesResponseDto } from "./dto/response";
-import { FileParamsDto, FileUpdateActivateBodyDto } from "./dto/request";
+import { FileParamsDto, FileUpdateActivateBodyDto, FileUpdateNameBodyDto } from "./dto/request";
+import { JwtAuthGuard, type JwtPayload } from "@libs/auth";
+import { User } from "../auth/decorators/user.decorator";
 
 @Controller("file")
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth("access-token")
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
@@ -13,17 +17,34 @@ export class FileController {
     description: "Список файлов",
     type: GetFilesResponseDto
   })
-  async list() {
-    return this.fileService.list();
+  async list(@User() user: JwtPayload) {
+    return this.fileService.list(user.sub);
   }
 
-  @Patch(":id/update/activate")
+  @Patch("/update/activate/:id")
   @ApiResponse({
     description: "Активация файла",
     type: FileResponseDto
   })
-  activate(@Param() params: FileParamsDto, @Body() body: FileUpdateActivateBodyDto) {
-    return this.fileService.activate(params.id, body.isActive);
+  activate(
+    @Param() params: FileParamsDto,
+    @Body() body: FileUpdateActivateBodyDto,
+    @User() user: JwtPayload
+  ) {
+    return this.fileService.activate(params.id, body.isActive, user.sub);
+  }
+
+  @Patch("/update/name/:id")
+  @ApiResponse({
+    description: "Изменение имени файла",
+    type: FileResponseDto
+  })
+  updateName(
+    @Param() params: FileParamsDto,
+    @Body() body: FileUpdateNameBodyDto,
+    @User() user: JwtPayload
+  ) {
+    return this.fileService.name(params.id, body.name, user.sub);
   }
 
   @Delete(":id")
@@ -31,7 +52,7 @@ export class FileController {
     description: "Удаление файла",
     type: FileResponseDto
   })
-  delete(@Param() params: FileParamsDto) {
-    return this.fileService.delete(params.id);
+  delete(@Param() params: FileParamsDto, @User() user: JwtPayload) {
+    return this.fileService.delete(params.id, user.sub);
   }
 }

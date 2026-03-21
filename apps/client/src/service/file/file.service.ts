@@ -7,8 +7,15 @@ import { SuccessResponseDto } from "src/common/types";
 export class FileService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(): Promise<GetFilesResponseDto> {
-    const files = await this.prisma.file.findMany();
+  async list(userId: string): Promise<GetFilesResponseDto> {
+    const files = await this.prisma.file.findMany({
+      where: {
+        userId
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    });
     return {
       files: files.map((file) => ({
         id: file.id,
@@ -18,10 +25,34 @@ export class FileService {
     };
   }
 
-  async activate(id: string, isActive: boolean): Promise<FileResponseDto> {
+  async activate(id: string, isActive: boolean, userId: string): Promise<FileResponseDto> {
+    await this.prisma.file.updateMany({
+      where: {
+        userId
+      },
+      data: {
+        isActive: false
+      }
+    });
+
     const file = await this.prisma.file.update({
-      where: { id },
+      where: { id, userId },
       data: { isActive }
+    });
+
+    return {
+      file: {
+        id: file.id,
+        name: file.name,
+        isActive: file.isActive
+      }
+    };
+  }
+
+  async name(id: string, name: string, userId: string): Promise<FileResponseDto> {
+    const file = await this.prisma.file.update({
+      where: { id, userId },
+      data: { name }
     });
     return {
       file: {
@@ -32,9 +63,9 @@ export class FileService {
     };
   }
 
-  async delete(id: string): Promise<SuccessResponseDto> {
+  async delete(id: string, userId: string): Promise<SuccessResponseDto> {
     const file = await this.prisma.file.delete({
-      where: { id }
+      where: { id, userId }
     });
     return {
       success: true
