@@ -1,4 +1,19 @@
 services:
+  deploy:
+    build:
+      context: .
+      dockerfile: ./libs/database/Dockerfile
+    container_name: satellites-deploy-${APP_TYPE:-dev}
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:5432/db?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: "no"
+
   db:
     image: postgres:17-alpine
     container_name: satellites-postgres-${APP_TYPE:-dev}
