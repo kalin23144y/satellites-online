@@ -4,7 +4,7 @@ import { FileJobsEnum, QueueEnum } from "@libs/common";
 import { Logger } from "@nestjs/common";
 import { FileService } from "./file.service";
 
-@Processor(QueueEnum.FILE)
+@Processor(QueueEnum.FILE, { concurrency: 1000 })
 export class FileConsumer extends WorkerHost {
   private readonly logger = new Logger(FileConsumer.name);
 
@@ -26,19 +26,20 @@ export class FileConsumer extends WorkerHost {
   @OnWorkerEvent("active")
   onActive(job: Job) {
     this.logger.log(`Processing job ${job.id} of type ${job.name} with data...`);
-    this.logger.log(job.data)
+    this.logger.log(job.data);
   }
 
-  @OnWorkerEvent('failed')
+  @OnWorkerEvent("failed")
   onFailed(job: Job) {
-    this.logger.error(`Job ${job.id} of type ${job.name} failed. Error reason: ${job.failedReason}`);
-    this.logger.debug(job.data)
+    this.logger.error(
+      `Job ${job.id} of type ${job.name} failed. Error reason: ${job.failedReason}`
+    );
+    this.logger.debug(job.data);
   }
 
-  @OnWorkerEvent('completed')
+  @OnWorkerEvent("completed")
   onCompleted(job: Job) {
     this.logger.log(`Job ${job.id} of type ${job.name} completed`);
-    this.logger.debug(job.data)
+    this.logger.debug(job.data);
   }
-
 }
