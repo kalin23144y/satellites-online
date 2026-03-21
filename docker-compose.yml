@@ -125,7 +125,8 @@ networks:
   app-network:
     driver: bridge
   webnet:
-    external: true
+    external:
+      name: traefic_webnet
 
 
 volumes:
