@@ -3,6 +3,8 @@ import { BullModule } from "@nestjs/bullmq";
 import { Module } from "@nestjs/common";
 import { TleService } from "./tle.service";
 import { TleController } from "./tle.controller";
+import { TleDemoController } from "./tle-demo.controller";
+import { TleUserController } from "./tle-user.controller";
 
 @Module({
   imports: [
@@ -10,7 +12,7 @@ import { TleController } from "./tle.controller";
       name: QueueEnum.FILE
     })
   ],
-  controllers: [TleController],
+  controllers: [TleController, TleDemoController, TleUserController],
   providers: [TleService],
 })
 export class TleModule {}
