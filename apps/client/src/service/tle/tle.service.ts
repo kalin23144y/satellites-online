@@ -4,6 +4,7 @@ import { InjectQueue } from "@nestjs/bullmq";
 import { Injectable } from "@nestjs/common";
 import { Queue } from "bullmq";
 import { PrismaService } from "@libs/database";
+import { GetTlesResponseDto, TleDto } from "./dto/response";
 
 @Injectable()
 export class TleService {
@@ -22,7 +23,7 @@ export class TleService {
         id: true
       }
     });
-    console.log(createdFile)
+
     await this.minio.putObject(MinioKeys.tle, `${createdFile.id}.txt`, file.buffer, file.size, {
       "Content-Type": file.mimetype
     });
@@ -36,5 +37,81 @@ export class TleService {
     );
 
     return { success: true };
+  }
+
+  async getDemoTles(): Promise<GetTlesResponseDto> {
+    const satellites = await this.prisma.satellite.findMany({
+      where: {
+        tles: {
+          some: {}
+        }
+      },
+      select: {
+        noradId: true,
+        tles: {
+          orderBy: {
+            createdAt: "desc"
+          },
+          take: 1,
+          select: {
+            line1: true,
+            line2: true
+          }
+        }
+      },
+      orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
+      take: 100
+    });
+
+    return {
+      data: satellites
+        .filter((satellite) => satellite.tles.length > 0)
+        .map((satellite) =>
+          this.mapTleToDto(satellite.noradId, satellite.tles[0].line1, satellite.tles[0].line2)
+        )
+    };
+  }
+
+  async getUserTles(userId: string): Promise<GetTlesResponseDto> {
+    const satellites = await this.prisma.satellite.findMany({
+      where: {
+        file: {
+          userId
+        },
+        tles: {
+          some: {}
+        }
+      },
+      select: {
+        noradId: true,
+        tles: {
+          orderBy: {
+            createdAt: "desc"
+          },
+          take: 1,
+          select: {
+            line1: true,
+            line2: true
+          }
+        }
+      },
+      orderBy: [{ updatedAt: "desc" }, { id: "asc" }]
+    });
+
+    return {
+      data: satellites
+        .filter((satellite) => satellite.tles.length > 0)
+        .map((satellite) =>
+          this.mapTleToDto(satellite.noradId, satellite.tles[0].line1, satellite.tles[0].line2)
+        )
+    };
+  }
+
+  private mapTleToDto(noradId: number, tle1: string, tle2: string): TleDto {
+    return {
+      noradId,
+      tle1,
+      tle2
+    };
   }
 }

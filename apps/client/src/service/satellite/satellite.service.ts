@@ -8,6 +8,11 @@ export class SatelliteService {
 
   async getDemoSatellites(): Promise<GetSatellitesResponseDto> {
     const satellites = await this.prisma.satellite.findMany({
+      where: {
+        tles: {
+          some: {}
+        }
+      },
       include: {
         country: {
           select: {
@@ -16,10 +21,8 @@ export class SatelliteService {
           }
         }
       },
-      orderBy: {
-        updatedAt: "desc"
-      },
-      take: 5
+      orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
+      take: 100
     });
 
     return {
@@ -32,6 +35,9 @@ export class SatelliteService {
       where: {
         file: {
           userId
+        },
+        tles: {
+          some: {}
         }
       },
       include: {
@@ -42,9 +48,7 @@ export class SatelliteService {
           }
         }
       },
-      orderBy: {
-        name: "asc"
-      }
+      orderBy: [{ updatedAt: "desc" }, { id: "asc" }]
     });
 
     return {
@@ -53,7 +57,7 @@ export class SatelliteService {
   }
 
   async getDemoSatelliteById(id: string): Promise<GetSatelliteResponseDto> {
-    const satellite = await this.prisma.satellite.findFirst({
+    const satellite = await this.prisma.satellite.findUnique({
       where: {
         id
       },

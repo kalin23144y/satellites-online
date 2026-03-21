@@ -35,7 +35,7 @@ export class FileConsumer extends WorkerHost {
     this.logger.debug(job.data)
   }
 
-    @OnWorkerEvent('completed')
+  @OnWorkerEvent('completed')
   onCompleted(job: Job) {
     this.logger.log(`Job ${job.id} of type ${job.name} completed`);
     this.logger.debug(job.data)
