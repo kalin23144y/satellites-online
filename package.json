@@ -14,7 +14,10 @@
     "db:status": "pnpm --filter @libs/database exec prisma migrate status",
     "db:reset": "pnpm --filter @libs/database exec prisma migrate reset --force",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docker:client": "docker build -f apps/client/Dockerfile -t hackaton-client .",
+    "docker:worker": "docker build -f apps/worker/Dockerfile -t hackaton-worker .",
+    "docker:compose": "docker compose up --build"
   },
   "devDependencies": {
     "prettier": "^3.6.2",

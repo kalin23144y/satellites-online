@@ -1,5 +1,4 @@
 services:
-
   db:
     image: postgres:17-alpine
     container_name: satellites-postgres-${APP_TYPE:-dev}
@@ -21,6 +20,8 @@ services:
       - app-network
     restart: unless-stopped
 
+
+  
   redis:
     image: redis:7-alpine
     container_name: satellites-redis-${APP_TYPE:-dev}
@@ -60,6 +61,56 @@ services:
       - "${MINIO_CONSOLE_PORT:-9001}:9001"
     volumes:
       - minio_data:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+
+  client:
+    container_name: satellites-client-${APP_TYPE:-dev}
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:5432/db?schema=public
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_URL=http://minio:9000
+      - MINIO_USE_SSL=false
+      - MINIO_FORCE_PATH_STYLE=false
+    ports:
+      - "${APP_CLIENT_PORT:-3001}:3001"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  worker:
+    container_name: satellites-worker-${APP_TYPE:-dev}
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:5432/db?schema=public
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_ENDPOINT=minio
+      - MINIO_PORT=9000
+      - MINIO_URL=http://minio:9000
+      - MINIO_USE_SSL=false
+      - MINIO_FORCE_PATH_STYLE=false
     networks:
       - app-network
     restart: unless-stopped

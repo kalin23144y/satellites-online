@@ -1,0 +1,17 @@
+node_modules
+**/node_modules
+.git
+.gitignore
+**/.git
+dist
+**/dist
+.turbo
+**/*.md
+.env
+.env.*
+!.env.example
+coverage
+**/.vscode
+**/terminals
+pnpm-debug.log
+*.log
