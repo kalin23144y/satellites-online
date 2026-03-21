@@ -5,6 +5,7 @@ import { Injectable } from "@nestjs/common";
 import { Queue } from "bullmq";
 import { PrismaService } from "@libs/database";
 import { GetTlesResponseDto, TleDto } from "./dto/response";
+import { SatelliteFiltersDto } from "src/common/dto/satellite-filters.dto";
 
 @Injectable()
 export class TleService {
@@ -40,13 +41,9 @@ export class TleService {
     return { success: true };
   }
 
-  async getDemoTles(): Promise<GetTlesResponseDto> {
+  async getDemoTles(filters: SatelliteFiltersDto): Promise<GetTlesResponseDto> {
     const satellites = await this.prisma.satellite.findMany({
-      where: {
-        tles: {
-          some: {}
-        }
-      },
+      where: this.buildSatelliteWhere(filters, true),
       select: {
         noradId: true,
         tles: {
@@ -73,16 +70,9 @@ export class TleService {
     };
   }
 
-  async getUserTles(userId: string): Promise<GetTlesResponseDto> {
+  async getUserTles(userId: string, filters: SatelliteFiltersDto): Promise<GetTlesResponseDto> {
     const satellites = await this.prisma.satellite.findMany({
-      where: {
-        file: {
-          userId
-        },
-        tles: {
-          some: {}
-        }
-      },
+      where: this.buildSatelliteWhere(filters, true, userId),
       select: {
         noradId: true,
         tles: {
@@ -113,6 +103,69 @@ export class TleService {
       noradId,
       tle1,
       tle2
+    };
+  }
+
+  private buildSatelliteWhere(
+    filters: SatelliteFiltersDto,
+    withTlesOnly = false,
+    userId?: string
+  ) {
+    const country = filters.country?.trim();
+    const type = filters.type?.trim();
+    const mission = filters.mission?.trim();
+
+    return {
+      ...(userId
+        ? {
+            file: {
+              userId
+            }
+          }
+        : {}),
+      ...(withTlesOnly
+        ? {
+            tles: {
+              some: {}
+            }
+          }
+        : {}),
+      ...(country
+        ? {
+            country: {
+              OR: [
+                {
+                  name: {
+                    contains: country,
+                    mode: "insensitive" as const
+                  }
+                },
+                {
+                  code: {
+                    contains: country,
+                    mode: "insensitive" as const
+                  }
+                }
+              ]
+            }
+          }
+        : {}),
+      ...(type
+        ? {
+            orbitClass: {
+              equals: type,
+              mode: "insensitive" as const
+            }
+          }
+        : {}),
+      ...(mission
+        ? {
+            purpose: {
+              contains: mission,
+              mode: "insensitive" as const
+            }
+          }
+        : {})
     };
   }
 }

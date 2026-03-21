@@ -1,9 +1,10 @@
-import { Controller, Get, Param, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard, type JwtPayload } from "@libs/auth";
 import { User } from "../auth/decorators/user.decorator";
 import { GetSatelliteResponseDto, GetSatellitesResponseDto } from "./dto/response";
 import { SatelliteService } from "./satellite.service";
+import { SatelliteFiltersDto } from "src/common/dto/satellite-filters.dto";
 
 @ApiTags("Спутники. Для авторизованного пользователя")
 @Controller("satellite/user")
@@ -16,8 +17,8 @@ export class SatelliteUserController {
   @ApiResponse({
     type: GetSatellitesResponseDto
   })
-  async getSatellites(@User() user: JwtPayload) {
-    return this.satelliteService.getUserSatellites(user.sub);
+  async getSatellites(@User() user: JwtPayload, @Query() filters: SatelliteFiltersDto) {
+    return this.satelliteService.getUserSatellites(user.sub, filters);
   }
 
   @Get(":id")

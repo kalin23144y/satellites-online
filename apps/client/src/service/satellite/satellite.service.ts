@@ -1,18 +1,15 @@
 import { PrismaService } from "@libs/database";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { GetSatelliteResponseDto, GetSatellitesResponseDto, SatelliteDto } from "./dto/response";
+import { SatelliteFiltersDto } from "src/common/dto/satellite-filters.dto";
 
 @Injectable()
 export class SatelliteService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getDemoSatellites(): Promise<GetSatellitesResponseDto> {
+  async getDemoSatellites(filters: SatelliteFiltersDto): Promise<GetSatellitesResponseDto> {
     const satellites = await this.prisma.satellite.findMany({
-      where: {
-        tles: {
-          some: {}
-        }
-      },
+      where: this.buildSatelliteWhere(filters, true),
       include: {
         country: {
           select: {
@@ -30,16 +27,12 @@ export class SatelliteService {
     };
   }
 
-  async getUserSatellites(userId: string): Promise<GetSatellitesResponseDto> {
+  async getUserSatellites(
+    userId: string,
+    filters: SatelliteFiltersDto
+  ): Promise<GetSatellitesResponseDto> {
     const satellites = await this.prisma.satellite.findMany({
-      where: {
-        file: {
-          userId
-        },
-        tles: {
-          some: {}
-        }
-      },
+      where: this.buildSatelliteWhere(filters, true, userId),
       include: {
         country: {
           select: {
@@ -150,6 +143,69 @@ export class SatelliteService {
       altitudeKm: satellite?.altitudeKm ? Math.round(satellite.altitudeKm) : 0,
       speedKms: this.calculateSpeedKms(satellite.altitudeKm),
       inclinationDeg: satellite.inclination ?? 0
+    };
+  }
+
+  private buildSatelliteWhere(
+    filters: SatelliteFiltersDto,
+    withTlesOnly = false,
+    userId?: string
+  ) {
+    const country = filters.country?.trim();
+    const type = filters.type?.trim();
+    const mission = filters.mission?.trim();
+
+    return {
+      ...(userId
+        ? {
+            file: {
+              userId
+            }
+          }
+        : {}),
+      ...(withTlesOnly
+        ? {
+            tles: {
+              some: {}
+            }
+          }
+        : {}),
+      ...(country
+        ? {
+            country: {
+              OR: [
+                {
+                  name: {
+                    contains: country,
+                    mode: "insensitive" as const
+                  }
+                },
+                {
+                  code: {
+                    contains: country,
+                    mode: "insensitive" as const
+                  }
+                }
+              ]
+            }
+          }
+        : {}),
+      ...(type
+        ? {
+            orbitClass: {
+              equals: type,
+              mode: "insensitive" as const
+            }
+          }
+        : {}),
+      ...(mission
+        ? {
+            purpose: {
+              contains: mission,
+              mode: "insensitive" as const
+            }
+          }
+        : {})
     };
   }
 }
