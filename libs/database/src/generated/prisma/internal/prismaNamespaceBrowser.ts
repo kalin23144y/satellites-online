@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Admin: 'Admin',
-  User: 'User'
+  User: 'User',
+  File: 'File',
+  Satellite: 'Satellite',
+  TleRecord: 'TleRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -93,6 +96,49 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const FileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
+export const SatelliteScalarFieldEnum = {
+  id: 'id',
+  noradId: 'noradId',
+  name: 'name',
+  operator: 'operator',
+  country: 'country',
+  purpose: 'purpose',
+  groupName: 'groupName',
+  orbitClass: 'orbitClass',
+  inclination: 'inclination',
+  periodMin: 'periodMin',
+  altitudeKm: 'altitudeKm',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  fileId: 'fileId'
+} as const
+
+export type SatelliteScalarFieldEnum = (typeof SatelliteScalarFieldEnum)[keyof typeof SatelliteScalarFieldEnum]
+
+
+export const TleRecordScalarFieldEnum = {
+  id: 'id',
+  satelliteId: 'satelliteId',
+  line1: 'line1',
+  line2: 'line2',
+  epoch: 'epoch',
+  source: 'source',
+  createdAt: 'createdAt'
+} as const
+
+export type TleRecordScalarFieldEnum = (typeof TleRecordScalarFieldEnum)[keyof typeof TleRecordScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -107,4 +153,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

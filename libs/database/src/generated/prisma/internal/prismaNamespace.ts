@@ -385,7 +385,10 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Admin: 'Admin',
-  User: 'User'
+  User: 'User',
+  File: 'File',
+  Satellite: 'Satellite',
+  TleRecord: 'TleRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "user"
+    modelProps: "admin" | "user" | "file" | "satellite" | "tleRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -553,6 +556,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    File: {
+      payload: Prisma.$FilePayload<ExtArgs>
+      fields: Prisma.FileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
+        }
+        findFirst: {
+          args: Prisma.FileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
+        }
+        findMany: {
+          args: Prisma.FileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>[]
+        }
+        create: {
+          args: Prisma.FileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
+        }
+        createMany: {
+          args: Prisma.FileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>[]
+        }
+        delete: {
+          args: Prisma.FileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
+        }
+        update: {
+          args: Prisma.FileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
+        }
+        deleteMany: {
+          args: Prisma.FileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>[]
+        }
+        upsert: {
+          args: Prisma.FileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FilePayload>
+        }
+        aggregate: {
+          args: Prisma.FileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFile>
+        }
+        groupBy: {
+          args: Prisma.FileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FileCountAggregateOutputType> | number
+        }
+      }
+    }
+    Satellite: {
+      payload: Prisma.$SatellitePayload<ExtArgs>
+      fields: Prisma.SatelliteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SatelliteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SatelliteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>
+        }
+        findFirst: {
+          args: Prisma.SatelliteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SatelliteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>
+        }
+        findMany: {
+          args: Prisma.SatelliteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>[]
+        }
+        create: {
+          args: Prisma.SatelliteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>
+        }
+        createMany: {
+          args: Prisma.SatelliteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SatelliteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>[]
+        }
+        delete: {
+          args: Prisma.SatelliteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>
+        }
+        update: {
+          args: Prisma.SatelliteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>
+        }
+        deleteMany: {
+          args: Prisma.SatelliteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SatelliteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SatelliteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>[]
+        }
+        upsert: {
+          args: Prisma.SatelliteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SatellitePayload>
+        }
+        aggregate: {
+          args: Prisma.SatelliteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSatellite>
+        }
+        groupBy: {
+          args: Prisma.SatelliteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SatelliteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SatelliteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SatelliteCountAggregateOutputType> | number
+        }
+      }
+    }
+    TleRecord: {
+      payload: Prisma.$TleRecordPayload<ExtArgs>
+      fields: Prisma.TleRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TleRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TleRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.TleRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TleRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>
+        }
+        findMany: {
+          args: Prisma.TleRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>[]
+        }
+        create: {
+          args: Prisma.TleRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>
+        }
+        createMany: {
+          args: Prisma.TleRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TleRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.TleRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>
+        }
+        update: {
+          args: Prisma.TleRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.TleRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TleRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TleRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.TleRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TleRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.TleRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTleRecord>
+        }
+        groupBy: {
+          args: Prisma.TleRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TleRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TleRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TleRecordCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -614,6 +839,49 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const FileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
+export const SatelliteScalarFieldEnum = {
+  id: 'id',
+  noradId: 'noradId',
+  name: 'name',
+  operator: 'operator',
+  country: 'country',
+  purpose: 'purpose',
+  groupName: 'groupName',
+  orbitClass: 'orbitClass',
+  inclination: 'inclination',
+  periodMin: 'periodMin',
+  altitudeKm: 'altitudeKm',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  fileId: 'fileId'
+} as const
+
+export type SatelliteScalarFieldEnum = (typeof SatelliteScalarFieldEnum)[keyof typeof SatelliteScalarFieldEnum]
+
+
+export const TleRecordScalarFieldEnum = {
+  id: 'id',
+  satelliteId: 'satelliteId',
+  line1: 'line1',
+  line2: 'line2',
+  epoch: 'epoch',
+  source: 'source',
+  createdAt: 'createdAt'
+} as const
+
+export type TleRecordScalarFieldEnum = (typeof TleRecordScalarFieldEnum)[keyof typeof TleRecordScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -628,6 +896,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -675,6 +951,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -774,6 +1064,9 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   admin?: Prisma.AdminOmit
   user?: Prisma.UserOmit
+  file?: Prisma.FileOmit
+  satellite?: Prisma.SatelliteOmit
+  tleRecord?: Prisma.TleRecordOmit
 }
 
 /* Types for Logging */

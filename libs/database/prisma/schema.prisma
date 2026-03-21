@@ -8,20 +8,77 @@ datasource db {
 }
 
 model Admin {
-  id       String   @id @default(uuid()) @db.Uuid
-  login    String   @unique
+  id       String @id @default(uuid()) @db.Uuid
+  login    String @unique
   password String
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model User {
-  id       String   @id @default(uuid()) @db.Uuid
-  login    String   @unique
+  id       String @id @default(uuid()) @db.Uuid
+  login    String @unique
   password String
-  name     String
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  files     File[]
+}
+
+model File {
+  id String @id @default(uuid()) @db.Uuid
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
+
+  sattellites Satellite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Satellite {
+  id      String @id @default(uuid())
+  noradId Int    @unique
+  name    String
+
+  operator  String?
+  country   String?
+  purpose   String?
+  groupName String?
+
+  orbitClass  String? // LEO / MEO / GEO
+  inclination Float?
+  periodMin   Float?
+  altitudeKm  Float?
+
+  tles TleRecord[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  file      File?    @relation(fields: [fileId], references: [id])
+  fileId    String?  @db.Uuid
+
+  @@index([country])
+  @@index([purpose])
+  @@index([orbitClass])
+}
+
+model TleRecord {
+  id String @id @default(uuid())
+
+  satelliteId String
+  satellite   Satellite @relation(fields: [satelliteId], references: [id], onDelete: Cascade)
+
+  line1 String
+  line2 String
+
+  epoch  DateTime?
+  source String?
+
+  createdAt DateTime @default(now())
+
+  @@index([satelliteId])
 }
