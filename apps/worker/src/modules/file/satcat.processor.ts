@@ -7,7 +7,7 @@ import { SatelliteCatalogService } from "./satellite-catalog.service";
 import { SyncSatcatJobDto } from "src/common/types/job.dto";
 
 @Processor(QueueEnum.SATCAT, {
-  concurrency: 5
+  concurrency: 1000
 })
 export class SatcatConsumer extends WorkerHost {
   private readonly logger = new Logger(SatcatConsumer.name);
