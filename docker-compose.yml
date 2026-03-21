@@ -107,7 +107,7 @@ services:
       - "traefik.http.routers.my-app.entrypoints=websecure"
       - "traefik.http.routers.my-app.tls.certresolver=letsencrypt"
       - "traefik.http.routers.purldb_https.tls=true"
-      - "traefik.http.routers.purldb_https.tls.certresolver=resolver"
+      - "traefik.http.routers.purldb_https.tls.certresolver=letsencrypt"
     networks:
       - app-network
       - webnet
