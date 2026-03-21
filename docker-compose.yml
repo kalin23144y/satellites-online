@@ -1,4 +1,19 @@
 services:
+  deploy:
+    build:
+      context: .
+      dockerfile: ./libs/database/Dockerfile
+    container_name: satellites-deploy-${APP_TYPE:-dev}
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:5432/db?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: "no"
+
   db:
     image: postgres:17-alpine
     container_name: satellites-postgres-${APP_TYPE:-dev}
@@ -20,8 +35,6 @@ services:
       - app-network
     restart: unless-stopped
 
-
-  
   redis:
     image: redis:7-alpine
     container_name: satellites-redis-${APP_TYPE:-dev}
@@ -65,7 +78,6 @@ services:
       - app-network
     restart: unless-stopped
 
-
   client:
     container_name: satellites-client-${APP_TYPE:-dev}
     build:
@@ -94,6 +106,8 @@ services:
       - "traefik.http.routers.my-app.rule=Host(`back.thecreatorq.ru`)"
       - "traefik.http.routers.my-app.entrypoints=websecure"
       - "traefik.http.routers.my-app.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.purldb_https.tls=true"
+      - "traefik.http.routers.purldb_https.tls.certresolver=letsencrypt"
     networks:
       - app-network
       - webnet
@@ -127,7 +141,6 @@ networks:
   webnet:
     external:
       name: traefic_webnet
-
 
 volumes:
   postgres_data:
