@@ -22,5 +22,11 @@
   "devDependencies": {
     "prettier": "^3.6.2",
     "prisma": "^7.5.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@nestjs/common": "11.1.17",
+      "@nestjs/core": "11.1.17"
+    }
   }
 }

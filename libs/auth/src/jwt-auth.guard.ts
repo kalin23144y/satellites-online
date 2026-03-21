@@ -1,9 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException
-} from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 
 @Injectable()
@@ -11,17 +6,24 @@ export class JwtAuthGuard implements CanActivate {
   constructor(private readonly authService: AuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<{
-      headers: { authorization?: string };
-      user?: unknown;
-    }>();
-    const token = this.extractBearerToken(request.headers?.authorization);
-    if (!token) {
-      throw new UnauthorizedException("Требуется Bearer-токен");
+    try {
+      const request = context.switchToHttp().getRequest<{
+        headers: { authorization?: string };
+        user?: unknown;
+      }>();
+      const token = this.extractBearerToken(request.headers?.authorization);
+      if (!token) {
+        throw new UnauthorizedException("Требуется Bearer-токен");
+      }
+      const user = await this.authService.validateToken(token);
+      request.user = user;
+      return true;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      throw new UnauthorizedException("Недействительный или просроченный токен");
     }
-    const user = await this.authService.validateToken(token);
-    request.user = user;
-    return true;
   }
 
   private extractBearerToken(authorization?: string): string | undefined {
