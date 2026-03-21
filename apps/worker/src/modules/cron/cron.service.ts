@@ -21,7 +21,12 @@ export class CronService implements OnModuleInit {
   /** Ставит в очередь задачу синхронизации метаданных SATCAT (HTTP вне парсинга TLE). */
   @Cron(CronExpression.EVERY_WEEKEND)
   async queueSatcatSync(): Promise<void> {
+    
     const satcatCount = this.config.satcat.count;
+    if (satcatCount === 0) {
+      this.logger.log("SATCAT count is 0, skipping sync");
+      return;
+    }
     const take = this.config.satcat.take;
     const offset = this.config.satcat.offset;
 
