@@ -106,8 +106,7 @@ services:
       - "traefik.http.routers.my-app.rule=Host(`back.thecreatorq.ru`)"
       - "traefik.http.routers.my-app.entrypoints=websecure"
       - "traefik.http.routers.my-app.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.purldb_https.tls=true"
-      - "traefik.http.routers.purldb_https.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.my-app.tls=true"
     networks:
       - app-network
       - webnet
