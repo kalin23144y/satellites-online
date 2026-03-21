@@ -89,8 +89,14 @@ services:
       - MINIO_FORCE_PATH_STYLE=false
     ports:
       - "${APP_CLIENT_PORT:-3001}:3001"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-app.rule=Host(`back.thecreatorq.ru`)"
+      - "traefik.http.routers.my-app.entrypoints=websecure"
+      - "traefik.http.routers.my-app.tls.certresolver=letsencrypt"
     networks:
       - app-network
+      - webnet
     restart: unless-stopped
 
   worker:
@@ -118,6 +124,9 @@ services:
 networks:
   app-network:
     driver: bridge
+  webnet:
+    external: true
+
 
 volumes:
   postgres_data:
