@@ -20,6 +20,7 @@ import { User } from "./decorators/user.decorator";
 import { UserAuthService } from "./user-auth.service";
 import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
+import { AuthResponseDto, MeResponseDto } from "./dto/me-response.dto";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -28,7 +29,7 @@ export class AuthController {
 
   @Post("register")
   @ApiOperation({ summary: "Регистрация" })
-  @ApiResponse({ status: 201, description: "Пользователь создан, выдан токен" })
+  @ApiResponse({ status: 201, description: "Пользователь создан, выдан токен", type: AuthResponseDto })
   @ApiResponse({ status: 409, description: "Логин уже занят" })
   async register(@Body() dto: RegisterDto) {
     return this.userAuth.register(dto);
@@ -37,7 +38,7 @@ export class AuthController {
   @Post("login")
   @ApiOperation({ summary: "Вход" })
   @ApiBody({ type: LoginDto })
-  @ApiResponse({ status: 200, description: "Успешная авторизация" })
+  @ApiResponse({ status: 200, description: "Успешная авторизация", type: AuthResponseDto })
   @ApiResponse({ status: 401, description: "Неверные учётные данные" })
   async login(@Body() dto: LoginDto) {
     return this.userAuth.login(dto);
@@ -57,9 +58,9 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth("access-token")
   @ApiOperation({ summary: "Текущий пользователь (JWT)" })
-  @ApiResponse({ status: 200, description: "Данные из токена" })
+  @ApiResponse({ status: 200, description: "Профиль текущего пользователя", type: MeResponseDto })
   @ApiResponse({ status: 401, description: "Нет или невалидный токен" })
   me(@User() user: JwtPayload) {
-    return { user };
+    return this.userAuth.me(user.sub);
   }
 }

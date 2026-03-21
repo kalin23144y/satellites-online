@@ -7,10 +7,11 @@
     "start": "bun run src/main.ts"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.9.0",
     "@libs/auth": "workspace:*",
+    "@libs/common": "workspace:*",
     "@libs/database": "workspace:*",
     "@libs/minio": "workspace:*",
-    "@libs/common": "workspace:*",
     "@nestjs/bullmq": "^11.0.4",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
