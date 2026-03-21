@@ -43,6 +43,7 @@ export class AuthController {
     return this.userAuth.login(dto);
   }
 
+
   @Post("logout")
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
