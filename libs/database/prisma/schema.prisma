@@ -44,7 +44,8 @@ model Satellite {
   name    String
 
   operator  String?
-  country   String?
+  country   Country? @relation(fields: [countryId], references: [id])
+  countryId String?  @db.Uuid
   purpose   String?
   groupName String?
 
@@ -58,13 +59,14 @@ model Satellite {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  file      File?    @relation(fields: [fileId], references: [id])
-  fileId    String?  @db.Uuid
+  file   File?   @relation(fields: [fileId], references: [id])
+  fileId String? @db.Uuid
 
-  @@index([country])
+  @@index([countryId])
   @@index([purpose])
   @@index([orbitClass])
 }
+
 
 model TleRecord {
   id String @id @default(uuid())
@@ -82,3 +84,18 @@ model TleRecord {
 
   @@index([satelliteId])
 }
+
+model Country {
+  id         String      @id @default(uuid()) @db.Uuid
+  name       String?     
+  code       String      @unique
+  color      String
+  filePath   String?
+  satellites Satellite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([name])
+}
+

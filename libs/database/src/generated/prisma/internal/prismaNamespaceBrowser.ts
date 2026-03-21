@@ -55,7 +55,8 @@ export const ModelName = {
   User: 'User',
   File: 'File',
   Satellite: 'Satellite',
-  TleRecord: 'TleRecord'
+  TleRecord: 'TleRecord',
+  Country: 'Country'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -111,7 +112,7 @@ export const SatelliteScalarFieldEnum = {
   noradId: 'noradId',
   name: 'name',
   operator: 'operator',
-  country: 'country',
+  countryId: 'countryId',
   purpose: 'purpose',
   groupName: 'groupName',
   orbitClass: 'orbitClass',
@@ -137,6 +138,19 @@ export const TleRecordScalarFieldEnum = {
 } as const
 
 export type TleRecordScalarFieldEnum = (typeof TleRecordScalarFieldEnum)[keyof typeof TleRecordScalarFieldEnum]
+
+
+export const CountryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  color: 'color',
+  filePath: 'filePath',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CountryScalarFieldEnum = (typeof CountryScalarFieldEnum)[keyof typeof CountryScalarFieldEnum]
 
 
 export const SortOrder = {

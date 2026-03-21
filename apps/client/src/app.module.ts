@@ -6,9 +6,9 @@ import { ConfigService } from "./common/config/config.service";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { UserAuthModule } from "./service/auth/auth.module";
-import { OrbitCalculationModule } from "./service/orbit-calculation/orbit-calculation.module";
 import { MinioModule } from "@libs/minio";
 import { TleModule } from "./service/tle/tle.module";
+import { CountryModule } from "./service/country/country.module";
 import { BullModule } from "@nestjs/bullmq";
 
 @Module({
@@ -58,8 +58,8 @@ import { BullModule } from "@nestjs/bullmq";
       }
     }),
     UserAuthModule,
-    OrbitCalculationModule
-    TleModule
+    TleModule,
+    CountryModule
   ],
   controllers: [AppController],
   providers: [AppService]

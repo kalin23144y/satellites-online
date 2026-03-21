@@ -1,3 +1,4 @@
 export enum MinioKeys {
-  tle = "tle"
+  tle = "tle",
+  country = "country"
 }

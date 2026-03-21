@@ -388,7 +388,8 @@ export const ModelName = {
   User: 'User',
   File: 'File',
   Satellite: 'Satellite',
-  TleRecord: 'TleRecord'
+  TleRecord: 'TleRecord',
+  Country: 'Country'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "user" | "file" | "satellite" | "tleRecord"
+    modelProps: "admin" | "user" | "file" | "satellite" | "tleRecord" | "country"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Country: {
+      payload: Prisma.$CountryPayload<ExtArgs>
+      fields: Prisma.CountryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CountryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CountryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>
+        }
+        findFirst: {
+          args: Prisma.CountryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CountryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>
+        }
+        findMany: {
+          args: Prisma.CountryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>[]
+        }
+        create: {
+          args: Prisma.CountryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>
+        }
+        createMany: {
+          args: Prisma.CountryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CountryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>[]
+        }
+        delete: {
+          args: Prisma.CountryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>
+        }
+        update: {
+          args: Prisma.CountryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>
+        }
+        deleteMany: {
+          args: Prisma.CountryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CountryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CountryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>[]
+        }
+        upsert: {
+          args: Prisma.CountryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CountryPayload>
+        }
+        aggregate: {
+          args: Prisma.CountryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCountry>
+        }
+        groupBy: {
+          args: Prisma.CountryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CountryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CountryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CountryCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -854,7 +929,7 @@ export const SatelliteScalarFieldEnum = {
   noradId: 'noradId',
   name: 'name',
   operator: 'operator',
-  country: 'country',
+  countryId: 'countryId',
   purpose: 'purpose',
   groupName: 'groupName',
   orbitClass: 'orbitClass',
@@ -880,6 +955,19 @@ export const TleRecordScalarFieldEnum = {
 } as const
 
 export type TleRecordScalarFieldEnum = (typeof TleRecordScalarFieldEnum)[keyof typeof TleRecordScalarFieldEnum]
+
+
+export const CountryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  color: 'color',
+  filePath: 'filePath',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CountryScalarFieldEnum = (typeof CountryScalarFieldEnum)[keyof typeof CountryScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1067,6 +1155,7 @@ export type GlobalOmitConfig = {
   file?: Prisma.FileOmit
   satellite?: Prisma.SatelliteOmit
   tleRecord?: Prisma.TleRecordOmit
+  country?: Prisma.CountryOmit
 }
 
 /* Types for Logging */

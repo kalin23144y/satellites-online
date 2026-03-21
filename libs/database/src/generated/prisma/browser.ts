@@ -42,3 +42,8 @@ export type Satellite = Prisma.SatelliteModel
  * 
  */
 export type TleRecord = Prisma.TleRecordModel
+/**
+ * Model Country
+ * 
+ */
+export type Country = Prisma.CountryModel

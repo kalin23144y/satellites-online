@@ -45,7 +45,7 @@ export type SatelliteMinAggregateOutputType = {
   noradId: number | null
   name: string | null
   operator: string | null
-  country: string | null
+  countryId: string | null
   purpose: string | null
   groupName: string | null
   orbitClass: string | null
@@ -62,7 +62,7 @@ export type SatelliteMaxAggregateOutputType = {
   noradId: number | null
   name: string | null
   operator: string | null
-  country: string | null
+  countryId: string | null
   purpose: string | null
   groupName: string | null
   orbitClass: string | null
@@ -79,7 +79,7 @@ export type SatelliteCountAggregateOutputType = {
   noradId: number
   name: number
   operator: number
-  country: number
+  countryId: number
   purpose: number
   groupName: number
   orbitClass: number
@@ -112,7 +112,7 @@ export type SatelliteMinAggregateInputType = {
   noradId?: true
   name?: true
   operator?: true
-  country?: true
+  countryId?: true
   purpose?: true
   groupName?: true
   orbitClass?: true
@@ -129,7 +129,7 @@ export type SatelliteMaxAggregateInputType = {
   noradId?: true
   name?: true
   operator?: true
-  country?: true
+  countryId?: true
   purpose?: true
   groupName?: true
   orbitClass?: true
@@ -146,7 +146,7 @@ export type SatelliteCountAggregateInputType = {
   noradId?: true
   name?: true
   operator?: true
-  country?: true
+  countryId?: true
   purpose?: true
   groupName?: true
   orbitClass?: true
@@ -250,7 +250,7 @@ export type SatelliteGroupByOutputType = {
   noradId: number
   name: string
   operator: string | null
-  country: string | null
+  countryId: string | null
   purpose: string | null
   groupName: string | null
   orbitClass: string | null
@@ -290,7 +290,7 @@ export type SatelliteWhereInput = {
   noradId?: Prisma.IntFilter<"Satellite"> | number
   name?: Prisma.StringFilter<"Satellite"> | string
   operator?: Prisma.StringNullableFilter<"Satellite"> | string | null
-  country?: Prisma.StringNullableFilter<"Satellite"> | string | null
+  countryId?: Prisma.UuidNullableFilter<"Satellite"> | string | null
   purpose?: Prisma.StringNullableFilter<"Satellite"> | string | null
   groupName?: Prisma.StringNullableFilter<"Satellite"> | string | null
   orbitClass?: Prisma.StringNullableFilter<"Satellite"> | string | null
@@ -300,6 +300,7 @@ export type SatelliteWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Satellite"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Satellite"> | Date | string
   fileId?: Prisma.UuidNullableFilter<"Satellite"> | string | null
+  country?: Prisma.XOR<Prisma.CountryNullableScalarRelationFilter, Prisma.CountryWhereInput> | null
   tles?: Prisma.TleRecordListRelationFilter
   file?: Prisma.XOR<Prisma.FileNullableScalarRelationFilter, Prisma.FileWhereInput> | null
 }
@@ -309,7 +310,7 @@ export type SatelliteOrderByWithRelationInput = {
   noradId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operator?: Prisma.SortOrderInput | Prisma.SortOrder
-  country?: Prisma.SortOrderInput | Prisma.SortOrder
+  countryId?: Prisma.SortOrderInput | Prisma.SortOrder
   purpose?: Prisma.SortOrderInput | Prisma.SortOrder
   groupName?: Prisma.SortOrderInput | Prisma.SortOrder
   orbitClass?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -319,6 +320,7 @@ export type SatelliteOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   fileId?: Prisma.SortOrderInput | Prisma.SortOrder
+  country?: Prisma.CountryOrderByWithRelationInput
   tles?: Prisma.TleRecordOrderByRelationAggregateInput
   file?: Prisma.FileOrderByWithRelationInput
 }
@@ -331,7 +333,7 @@ export type SatelliteWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.SatelliteWhereInput | Prisma.SatelliteWhereInput[]
   name?: Prisma.StringFilter<"Satellite"> | string
   operator?: Prisma.StringNullableFilter<"Satellite"> | string | null
-  country?: Prisma.StringNullableFilter<"Satellite"> | string | null
+  countryId?: Prisma.UuidNullableFilter<"Satellite"> | string | null
   purpose?: Prisma.StringNullableFilter<"Satellite"> | string | null
   groupName?: Prisma.StringNullableFilter<"Satellite"> | string | null
   orbitClass?: Prisma.StringNullableFilter<"Satellite"> | string | null
@@ -341,6 +343,7 @@ export type SatelliteWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Satellite"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Satellite"> | Date | string
   fileId?: Prisma.UuidNullableFilter<"Satellite"> | string | null
+  country?: Prisma.XOR<Prisma.CountryNullableScalarRelationFilter, Prisma.CountryWhereInput> | null
   tles?: Prisma.TleRecordListRelationFilter
   file?: Prisma.XOR<Prisma.FileNullableScalarRelationFilter, Prisma.FileWhereInput> | null
 }, "id" | "noradId">
@@ -350,7 +353,7 @@ export type SatelliteOrderByWithAggregationInput = {
   noradId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operator?: Prisma.SortOrderInput | Prisma.SortOrder
-  country?: Prisma.SortOrderInput | Prisma.SortOrder
+  countryId?: Prisma.SortOrderInput | Prisma.SortOrder
   purpose?: Prisma.SortOrderInput | Prisma.SortOrder
   groupName?: Prisma.SortOrderInput | Prisma.SortOrder
   orbitClass?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -375,7 +378,7 @@ export type SatelliteScalarWhereWithAggregatesInput = {
   noradId?: Prisma.IntWithAggregatesFilter<"Satellite"> | number
   name?: Prisma.StringWithAggregatesFilter<"Satellite"> | string
   operator?: Prisma.StringNullableWithAggregatesFilter<"Satellite"> | string | null
-  country?: Prisma.StringNullableWithAggregatesFilter<"Satellite"> | string | null
+  countryId?: Prisma.UuidNullableWithAggregatesFilter<"Satellite"> | string | null
   purpose?: Prisma.StringNullableWithAggregatesFilter<"Satellite"> | string | null
   groupName?: Prisma.StringNullableWithAggregatesFilter<"Satellite"> | string | null
   orbitClass?: Prisma.StringNullableWithAggregatesFilter<"Satellite"> | string | null
@@ -392,7 +395,6 @@ export type SatelliteCreateInput = {
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -401,6 +403,7 @@ export type SatelliteCreateInput = {
   altitudeKm?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  country?: Prisma.CountryCreateNestedOneWithoutSatellitesInput
   tles?: Prisma.TleRecordCreateNestedManyWithoutSatelliteInput
   file?: Prisma.FileCreateNestedOneWithoutSattellitesInput
 }
@@ -410,7 +413,7 @@ export type SatelliteUncheckedCreateInput = {
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
+  countryId?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -428,7 +431,6 @@ export type SatelliteUpdateInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -437,6 +439,7 @@ export type SatelliteUpdateInput = {
   altitudeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  country?: Prisma.CountryUpdateOneWithoutSatellitesNestedInput
   tles?: Prisma.TleRecordUpdateManyWithoutSatelliteNestedInput
   file?: Prisma.FileUpdateOneWithoutSattellitesNestedInput
 }
@@ -446,7 +449,7 @@ export type SatelliteUncheckedUpdateInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -464,7 +467,7 @@ export type SatelliteCreateManyInput = {
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
+  countryId?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -481,7 +484,6 @@ export type SatelliteUpdateManyMutationInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -497,7 +499,7 @@ export type SatelliteUncheckedUpdateManyInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -524,7 +526,7 @@ export type SatelliteCountOrderByAggregateInput = {
   noradId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operator?: Prisma.SortOrder
-  country?: Prisma.SortOrder
+  countryId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   groupName?: Prisma.SortOrder
   orbitClass?: Prisma.SortOrder
@@ -548,7 +550,7 @@ export type SatelliteMaxOrderByAggregateInput = {
   noradId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operator?: Prisma.SortOrder
-  country?: Prisma.SortOrder
+  countryId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   groupName?: Prisma.SortOrder
   orbitClass?: Prisma.SortOrder
@@ -565,7 +567,7 @@ export type SatelliteMinOrderByAggregateInput = {
   noradId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operator?: Prisma.SortOrder
-  country?: Prisma.SortOrder
+  countryId?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   groupName?: Prisma.SortOrder
   orbitClass?: Prisma.SortOrder
@@ -665,12 +667,53 @@ export type SatelliteUpdateOneRequiredWithoutTlesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SatelliteUpdateToOneWithWhereWithoutTlesInput, Prisma.SatelliteUpdateWithoutTlesInput>, Prisma.SatelliteUncheckedUpdateWithoutTlesInput>
 }
 
+export type SatelliteCreateNestedManyWithoutCountryInput = {
+  create?: Prisma.XOR<Prisma.SatelliteCreateWithoutCountryInput, Prisma.SatelliteUncheckedCreateWithoutCountryInput> | Prisma.SatelliteCreateWithoutCountryInput[] | Prisma.SatelliteUncheckedCreateWithoutCountryInput[]
+  connectOrCreate?: Prisma.SatelliteCreateOrConnectWithoutCountryInput | Prisma.SatelliteCreateOrConnectWithoutCountryInput[]
+  createMany?: Prisma.SatelliteCreateManyCountryInputEnvelope
+  connect?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+}
+
+export type SatelliteUncheckedCreateNestedManyWithoutCountryInput = {
+  create?: Prisma.XOR<Prisma.SatelliteCreateWithoutCountryInput, Prisma.SatelliteUncheckedCreateWithoutCountryInput> | Prisma.SatelliteCreateWithoutCountryInput[] | Prisma.SatelliteUncheckedCreateWithoutCountryInput[]
+  connectOrCreate?: Prisma.SatelliteCreateOrConnectWithoutCountryInput | Prisma.SatelliteCreateOrConnectWithoutCountryInput[]
+  createMany?: Prisma.SatelliteCreateManyCountryInputEnvelope
+  connect?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+}
+
+export type SatelliteUpdateManyWithoutCountryNestedInput = {
+  create?: Prisma.XOR<Prisma.SatelliteCreateWithoutCountryInput, Prisma.SatelliteUncheckedCreateWithoutCountryInput> | Prisma.SatelliteCreateWithoutCountryInput[] | Prisma.SatelliteUncheckedCreateWithoutCountryInput[]
+  connectOrCreate?: Prisma.SatelliteCreateOrConnectWithoutCountryInput | Prisma.SatelliteCreateOrConnectWithoutCountryInput[]
+  upsert?: Prisma.SatelliteUpsertWithWhereUniqueWithoutCountryInput | Prisma.SatelliteUpsertWithWhereUniqueWithoutCountryInput[]
+  createMany?: Prisma.SatelliteCreateManyCountryInputEnvelope
+  set?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  disconnect?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  delete?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  connect?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  update?: Prisma.SatelliteUpdateWithWhereUniqueWithoutCountryInput | Prisma.SatelliteUpdateWithWhereUniqueWithoutCountryInput[]
+  updateMany?: Prisma.SatelliteUpdateManyWithWhereWithoutCountryInput | Prisma.SatelliteUpdateManyWithWhereWithoutCountryInput[]
+  deleteMany?: Prisma.SatelliteScalarWhereInput | Prisma.SatelliteScalarWhereInput[]
+}
+
+export type SatelliteUncheckedUpdateManyWithoutCountryNestedInput = {
+  create?: Prisma.XOR<Prisma.SatelliteCreateWithoutCountryInput, Prisma.SatelliteUncheckedCreateWithoutCountryInput> | Prisma.SatelliteCreateWithoutCountryInput[] | Prisma.SatelliteUncheckedCreateWithoutCountryInput[]
+  connectOrCreate?: Prisma.SatelliteCreateOrConnectWithoutCountryInput | Prisma.SatelliteCreateOrConnectWithoutCountryInput[]
+  upsert?: Prisma.SatelliteUpsertWithWhereUniqueWithoutCountryInput | Prisma.SatelliteUpsertWithWhereUniqueWithoutCountryInput[]
+  createMany?: Prisma.SatelliteCreateManyCountryInputEnvelope
+  set?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  disconnect?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  delete?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  connect?: Prisma.SatelliteWhereUniqueInput | Prisma.SatelliteWhereUniqueInput[]
+  update?: Prisma.SatelliteUpdateWithWhereUniqueWithoutCountryInput | Prisma.SatelliteUpdateWithWhereUniqueWithoutCountryInput[]
+  updateMany?: Prisma.SatelliteUpdateManyWithWhereWithoutCountryInput | Prisma.SatelliteUpdateManyWithWhereWithoutCountryInput[]
+  deleteMany?: Prisma.SatelliteScalarWhereInput | Prisma.SatelliteScalarWhereInput[]
+}
+
 export type SatelliteCreateWithoutFileInput = {
   id?: string
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -679,6 +722,7 @@ export type SatelliteCreateWithoutFileInput = {
   altitudeKm?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  country?: Prisma.CountryCreateNestedOneWithoutSatellitesInput
   tles?: Prisma.TleRecordCreateNestedManyWithoutSatelliteInput
 }
 
@@ -687,7 +731,7 @@ export type SatelliteUncheckedCreateWithoutFileInput = {
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
+  countryId?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -733,7 +777,7 @@ export type SatelliteScalarWhereInput = {
   noradId?: Prisma.IntFilter<"Satellite"> | number
   name?: Prisma.StringFilter<"Satellite"> | string
   operator?: Prisma.StringNullableFilter<"Satellite"> | string | null
-  country?: Prisma.StringNullableFilter<"Satellite"> | string | null
+  countryId?: Prisma.UuidNullableFilter<"Satellite"> | string | null
   purpose?: Prisma.StringNullableFilter<"Satellite"> | string | null
   groupName?: Prisma.StringNullableFilter<"Satellite"> | string | null
   orbitClass?: Prisma.StringNullableFilter<"Satellite"> | string | null
@@ -750,7 +794,6 @@ export type SatelliteCreateWithoutTlesInput = {
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -759,6 +802,7 @@ export type SatelliteCreateWithoutTlesInput = {
   altitudeKm?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  country?: Prisma.CountryCreateNestedOneWithoutSatellitesInput
   file?: Prisma.FileCreateNestedOneWithoutSattellitesInput
 }
 
@@ -767,7 +811,7 @@ export type SatelliteUncheckedCreateWithoutTlesInput = {
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
+  countryId?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -800,7 +844,6 @@ export type SatelliteUpdateWithoutTlesInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -809,6 +852,7 @@ export type SatelliteUpdateWithoutTlesInput = {
   altitudeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  country?: Prisma.CountryUpdateOneWithoutSatellitesNestedInput
   file?: Prisma.FileUpdateOneWithoutSattellitesNestedInput
 }
 
@@ -817,7 +861,7 @@ export type SatelliteUncheckedUpdateWithoutTlesInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -829,12 +873,72 @@ export type SatelliteUncheckedUpdateWithoutTlesInput = {
   fileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+export type SatelliteCreateWithoutCountryInput = {
+  id?: string
+  noradId: number
+  name: string
+  operator?: string | null
+  purpose?: string | null
+  groupName?: string | null
+  orbitClass?: string | null
+  inclination?: number | null
+  periodMin?: number | null
+  altitudeKm?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tles?: Prisma.TleRecordCreateNestedManyWithoutSatelliteInput
+  file?: Prisma.FileCreateNestedOneWithoutSattellitesInput
+}
+
+export type SatelliteUncheckedCreateWithoutCountryInput = {
+  id?: string
+  noradId: number
+  name: string
+  operator?: string | null
+  purpose?: string | null
+  groupName?: string | null
+  orbitClass?: string | null
+  inclination?: number | null
+  periodMin?: number | null
+  altitudeKm?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fileId?: string | null
+  tles?: Prisma.TleRecordUncheckedCreateNestedManyWithoutSatelliteInput
+}
+
+export type SatelliteCreateOrConnectWithoutCountryInput = {
+  where: Prisma.SatelliteWhereUniqueInput
+  create: Prisma.XOR<Prisma.SatelliteCreateWithoutCountryInput, Prisma.SatelliteUncheckedCreateWithoutCountryInput>
+}
+
+export type SatelliteCreateManyCountryInputEnvelope = {
+  data: Prisma.SatelliteCreateManyCountryInput | Prisma.SatelliteCreateManyCountryInput[]
+  skipDuplicates?: boolean
+}
+
+export type SatelliteUpsertWithWhereUniqueWithoutCountryInput = {
+  where: Prisma.SatelliteWhereUniqueInput
+  update: Prisma.XOR<Prisma.SatelliteUpdateWithoutCountryInput, Prisma.SatelliteUncheckedUpdateWithoutCountryInput>
+  create: Prisma.XOR<Prisma.SatelliteCreateWithoutCountryInput, Prisma.SatelliteUncheckedCreateWithoutCountryInput>
+}
+
+export type SatelliteUpdateWithWhereUniqueWithoutCountryInput = {
+  where: Prisma.SatelliteWhereUniqueInput
+  data: Prisma.XOR<Prisma.SatelliteUpdateWithoutCountryInput, Prisma.SatelliteUncheckedUpdateWithoutCountryInput>
+}
+
+export type SatelliteUpdateManyWithWhereWithoutCountryInput = {
+  where: Prisma.SatelliteScalarWhereInput
+  data: Prisma.XOR<Prisma.SatelliteUpdateManyMutationInput, Prisma.SatelliteUncheckedUpdateManyWithoutCountryInput>
+}
+
 export type SatelliteCreateManyFileInput = {
   id?: string
   noradId: number
   name: string
   operator?: string | null
-  country?: string | null
+  countryId?: string | null
   purpose?: string | null
   groupName?: string | null
   orbitClass?: string | null
@@ -850,7 +954,6 @@ export type SatelliteUpdateWithoutFileInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -859,6 +962,7 @@ export type SatelliteUpdateWithoutFileInput = {
   altitudeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  country?: Prisma.CountryUpdateOneWithoutSatellitesNestedInput
   tles?: Prisma.TleRecordUpdateManyWithoutSatelliteNestedInput
 }
 
@@ -867,7 +971,7 @@ export type SatelliteUncheckedUpdateWithoutFileInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -884,7 +988,7 @@ export type SatelliteUncheckedUpdateManyWithoutFileInput = {
   noradId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -893,6 +997,72 @@ export type SatelliteUncheckedUpdateManyWithoutFileInput = {
   altitudeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SatelliteCreateManyCountryInput = {
+  id?: string
+  noradId: number
+  name: string
+  operator?: string | null
+  purpose?: string | null
+  groupName?: string | null
+  orbitClass?: string | null
+  inclination?: number | null
+  periodMin?: number | null
+  altitudeKm?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fileId?: string | null
+}
+
+export type SatelliteUpdateWithoutCountryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  noradId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inclination?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  periodMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  altitudeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tles?: Prisma.TleRecordUpdateManyWithoutSatelliteNestedInput
+  file?: Prisma.FileUpdateOneWithoutSattellitesNestedInput
+}
+
+export type SatelliteUncheckedUpdateWithoutCountryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  noradId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inclination?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  periodMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  altitudeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tles?: Prisma.TleRecordUncheckedUpdateManyWithoutSatelliteNestedInput
+}
+
+export type SatelliteUncheckedUpdateManyWithoutCountryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  noradId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operator?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orbitClass?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inclination?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  periodMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  altitudeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fileId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -931,7 +1101,7 @@ export type SatelliteSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   noradId?: boolean
   name?: boolean
   operator?: boolean
-  country?: boolean
+  countryId?: boolean
   purpose?: boolean
   groupName?: boolean
   orbitClass?: boolean
@@ -941,6 +1111,7 @@ export type SatelliteSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   createdAt?: boolean
   updatedAt?: boolean
   fileId?: boolean
+  country?: boolean | Prisma.Satellite$countryArgs<ExtArgs>
   tles?: boolean | Prisma.Satellite$tlesArgs<ExtArgs>
   file?: boolean | Prisma.Satellite$fileArgs<ExtArgs>
   _count?: boolean | Prisma.SatelliteCountOutputTypeDefaultArgs<ExtArgs>
@@ -951,7 +1122,7 @@ export type SatelliteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   noradId?: boolean
   name?: boolean
   operator?: boolean
-  country?: boolean
+  countryId?: boolean
   purpose?: boolean
   groupName?: boolean
   orbitClass?: boolean
@@ -961,6 +1132,7 @@ export type SatelliteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   updatedAt?: boolean
   fileId?: boolean
+  country?: boolean | Prisma.Satellite$countryArgs<ExtArgs>
   file?: boolean | Prisma.Satellite$fileArgs<ExtArgs>
 }, ExtArgs["result"]["satellite"]>
 
@@ -969,7 +1141,7 @@ export type SatelliteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   noradId?: boolean
   name?: boolean
   operator?: boolean
-  country?: boolean
+  countryId?: boolean
   purpose?: boolean
   groupName?: boolean
   orbitClass?: boolean
@@ -979,6 +1151,7 @@ export type SatelliteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   updatedAt?: boolean
   fileId?: boolean
+  country?: boolean | Prisma.Satellite$countryArgs<ExtArgs>
   file?: boolean | Prisma.Satellite$fileArgs<ExtArgs>
 }, ExtArgs["result"]["satellite"]>
 
@@ -987,7 +1160,7 @@ export type SatelliteSelectScalar = {
   noradId?: boolean
   name?: boolean
   operator?: boolean
-  country?: boolean
+  countryId?: boolean
   purpose?: boolean
   groupName?: boolean
   orbitClass?: boolean
@@ -999,22 +1172,26 @@ export type SatelliteSelectScalar = {
   fileId?: boolean
 }
 
-export type SatelliteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "noradId" | "name" | "operator" | "country" | "purpose" | "groupName" | "orbitClass" | "inclination" | "periodMin" | "altitudeKm" | "createdAt" | "updatedAt" | "fileId", ExtArgs["result"]["satellite"]>
+export type SatelliteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "noradId" | "name" | "operator" | "countryId" | "purpose" | "groupName" | "orbitClass" | "inclination" | "periodMin" | "altitudeKm" | "createdAt" | "updatedAt" | "fileId", ExtArgs["result"]["satellite"]>
 export type SatelliteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  country?: boolean | Prisma.Satellite$countryArgs<ExtArgs>
   tles?: boolean | Prisma.Satellite$tlesArgs<ExtArgs>
   file?: boolean | Prisma.Satellite$fileArgs<ExtArgs>
   _count?: boolean | Prisma.SatelliteCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SatelliteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  country?: boolean | Prisma.Satellite$countryArgs<ExtArgs>
   file?: boolean | Prisma.Satellite$fileArgs<ExtArgs>
 }
 export type SatelliteIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  country?: boolean | Prisma.Satellite$countryArgs<ExtArgs>
   file?: boolean | Prisma.Satellite$fileArgs<ExtArgs>
 }
 
 export type $SatellitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Satellite"
   objects: {
+    country: Prisma.$CountryPayload<ExtArgs> | null
     tles: Prisma.$TleRecordPayload<ExtArgs>[]
     file: Prisma.$FilePayload<ExtArgs> | null
   }
@@ -1023,7 +1200,7 @@ export type $SatellitePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     noradId: number
     name: string
     operator: string | null
-    country: string | null
+    countryId: string | null
     purpose: string | null
     groupName: string | null
     orbitClass: string | null
@@ -1427,6 +1604,7 @@ readonly fields: SatelliteFieldRefs;
  */
 export interface Prisma__SatelliteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  country<T extends Prisma.Satellite$countryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Satellite$countryArgs<ExtArgs>>): Prisma.Prisma__CountryClient<runtime.Types.Result.GetResult<Prisma.$CountryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tles<T extends Prisma.Satellite$tlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Satellite$tlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TleRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   file<T extends Prisma.Satellite$fileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Satellite$fileArgs<ExtArgs>>): Prisma.Prisma__FileClient<runtime.Types.Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1462,7 +1640,7 @@ export interface SatelliteFieldRefs {
   readonly noradId: Prisma.FieldRef<"Satellite", 'Int'>
   readonly name: Prisma.FieldRef<"Satellite", 'String'>
   readonly operator: Prisma.FieldRef<"Satellite", 'String'>
-  readonly country: Prisma.FieldRef<"Satellite", 'String'>
+  readonly countryId: Prisma.FieldRef<"Satellite", 'String'>
   readonly purpose: Prisma.FieldRef<"Satellite", 'String'>
   readonly groupName: Prisma.FieldRef<"Satellite", 'String'>
   readonly orbitClass: Prisma.FieldRef<"Satellite", 'String'>
@@ -1870,6 +2048,25 @@ export type SatelliteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many Satellites to delete.
    */
   limit?: number
+}
+
+/**
+ * Satellite.country
+ */
+export type Satellite$countryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Country
+   */
+  select?: Prisma.CountrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Country
+   */
+  omit?: Prisma.CountryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CountryInclude<ExtArgs> | null
+  where?: Prisma.CountryWhereInput
 }
 
 /**

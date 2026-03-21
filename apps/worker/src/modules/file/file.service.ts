@@ -2,10 +2,8 @@ import { PrismaService } from "@libs/database";
 import { MinioKeys, MinioService } from "@libs/minio";
 import { Injectable } from "@nestjs/common";
 import type { Readable } from "node:stream";
-import {
-  SatelliteCatalogService,
-  type SatelliteEnrichment
-} from "./satellite-catalog.service";
+import { SatelliteCatalogService, type SatelliteEnrichment } from "./satellite-catalog.service";
+import { Country } from "node_modules/@libs/database/src/generated/prisma/client";
 
 type ParsedTleRecord = {
   name: string;
@@ -45,58 +43,77 @@ export class FileService {
     const fileContent = await this.streamToString(objectStream);
     const tleRecords = await this.parseTleContent(fileContent);
 
-      await this.prisma.tleRecord.deleteMany({
+    await this.prisma.tleRecord.deleteMany({
+      where: {
+        source: fileId
+      }
+    });
+
+    for (const record of tleRecords) {
+      let country: Country | null = null;
+      if (record.country) {
+        const countryName = record.country?.trim();
+          country = await this.prisma.country.findFirst({
+          where: {
+            code: countryName
+          }
+        });
+
+        if (!country) {
+          country = await this.prisma.country.create({
+            data: {
+              name: countryName,
+              code: countryName,
+              color: "#000000"
+            }
+          });
+        }
+      }
+
+      const satellite = await this.prisma.satellite.upsert({
         where: {
-          source: fileId
+          noradId: record.noradId
+        },
+        create: {
+          noradId: record.noradId,
+          name: record.name,
+          operator: record.operator,
+          countryId: country && country.id ? country.id : undefined,
+          purpose: record.purpose,
+          groupName: record.groupName,
+          inclination: record.inclination,
+          periodMin: record.periodMin,
+          altitudeKm: record.altitudeKm,
+          orbitClass: record.orbitClass,
+          fileId
+        },
+        update: {
+          name: record.name,
+          operator: record.operator,
+          countryId: country && country.id ? country.id : undefined,
+          purpose: record.purpose,
+          groupName: record.groupName,
+          inclination: record.inclination,
+          periodMin: record.periodMin,
+          altitudeKm: record.altitudeKm,
+          orbitClass: record.orbitClass,
+          fileId
+        },
+        select: {
+          id: true
         }
       });
 
-      for (const record of tleRecords) {
-        const satellite = await this.prisma.satellite.upsert({
-          where: {
-            noradId: record.noradId
-          },
-          create: {
-            noradId: record.noradId,
-            name: record.name,
-            operator: record.operator,
-            country: record.country,
-            purpose: record.purpose,
-            groupName: record.groupName,
-            inclination: record.inclination,
-            periodMin: record.periodMin,
-            altitudeKm: record.altitudeKm,
-            orbitClass: record.orbitClass,
-            fileId
-          },
-          update: {
-            name: record.name,
-            operator: record.operator,
-            country: record.country,
-            purpose: record.purpose,
-            groupName: record.groupName,
-            inclination: record.inclination,
-            periodMin: record.periodMin,
-            altitudeKm: record.altitudeKm,
-            orbitClass: record.orbitClass,
-            fileId
-          },
-          select: {
-            id: true
-          }
-        });
-
-        await this.prisma.tleRecord.create({
-          data: {
-            satelliteId: satellite.id,
-            line1: record.line1,
-            line2: record.line2,
-            epoch: record.epoch,
-            source: fileId
-          }
-        });
-      }
-
+      await this.prisma.tleRecord.create({
+        data: {
+          satelliteId: satellite.id,
+          line1: record.line1,
+          line2: record.line2,
+          epoch: record.epoch,
+          source: fileId
+        }
+      });
+    }
 
     return {
       fileId,
@@ -133,10 +150,7 @@ export class FileService {
       }
 
       const noradId = this.parseNoradId(line1, line2);
-      const enrichment = await this.satelliteCatalogService.enrichSatellite(
-        noradId,
-        name?.trim()
-      );
+      const enrichment = await this.satelliteCatalogService.enrichSatellite(noradId, name?.trim());
       const inclination = this.parseInclination(line2);
       const periodMin = this.parsePeriodMin(line2);
       const altitudeKm = this.parseAltitudeKm(periodMin);
@@ -222,9 +236,7 @@ export class FileService {
     const earthRadiusKm = 6378.137;
     const earthMu = 398600.4418;
     const periodSeconds = periodMin * 60;
-    const semiMajorAxisKm = Math.cbrt(
-      earthMu * Math.pow(periodSeconds / (2 * Math.PI), 2)
-    );
+    const semiMajorAxisKm = Math.cbrt(earthMu * Math.pow(periodSeconds / (2 * Math.PI), 2));
 
     return semiMajorAxisKm - earthRadiusKm;
   }
