@@ -3,16 +3,14 @@ import { AuthService } from "@libs/auth";
 import type { JwtPayload } from "@libs/auth";
 import { PrismaService } from "@libs/database";
 import * as bcrypt from "bcryptjs";
+import { fakerRU as faker } from "@faker-js/faker";
 import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
+import { AuthResponseDto, MeResponseDto } from "./dto/me-response.dto";
 
 const SALT_ROUNDS = 10;
 
-export type AuthUserView = {
-  id: string;
-  login: string;
-  createdAt: Date;
-};
+export type AuthUserView = MeResponseDto;
 
 @Injectable()
 export class UserAuthService {
@@ -21,7 +19,7 @@ export class UserAuthService {
     private readonly authService: AuthService
   ) {}
 
-  async register(dto: RegisterDto): Promise<{ accessToken: string; user: AuthUserView }> {
+  async register(dto: RegisterDto): Promise<AuthResponseDto> {
     const existing = await this.prisma.user.findUnique({
       where: { login: dto.username }
     });
@@ -30,11 +28,17 @@ export class UserAuthService {
     }
 
     const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
+    const profile = this.generateProfile();
 
     const user = await this.prisma.user.create({
       data: {
         login: dto.username,
-        password: passwordHash
+        password: passwordHash,
+        email: profile.email,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        gender: profile.gender,
+        image: profile.image
       }
     });
 
@@ -48,13 +52,13 @@ export class UserAuthService {
 
     return {
       accessToken,
-      user: this.toPublicUser(user)
+      ...this.toPublicUser(user)
     };
   }
 
-  async login(dto: LoginDto): Promise<{ accessToken: string; user: AuthUserView }> {
+  async login(dto: LoginDto): Promise<AuthResponseDto> {
     const user = await this.prisma.user.findUnique({
-      where: { login: dto.login }
+      where: { login: dto.username }
     });
 
     if (!user) {
@@ -76,20 +80,55 @@ export class UserAuthService {
 
     return {
       accessToken,
-      user: this.toPublicUser(user)
+      ...this.toPublicUser(user)
     };
   }
 
   private toPublicUser(user: {
     id: string;
     login: string;
-    createdAt: Date;
-    password: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    image: string;
   }): AuthUserView {
     return {
       id: user.id,
-      login: user.login,
-      createdAt: user.createdAt
+      username: user.login,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      gender: user.gender,
+      image: user.image
+    };
+  }
+
+  async me(userId: string): Promise<MeResponseDto> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId
+      }
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("Пользователь не найден");
+    }
+
+    return this.toPublicUser(user);
+  }
+
+  private generateProfile(): Pick<AuthUserView, "email" | "firstName" | "lastName" | "gender" | "image"> {
+    const gender = faker.helpers.arrayElement(["male", "female"] as const);
+    const firstName = faker.person.firstName(gender);
+    const lastName = faker.person.lastName(gender);
+
+    return {
+      email: faker.internet.email({ provider: "example.com" }).toLowerCase(),
+      firstName,
+      lastName,
+      gender,
+      image: faker.image.avatar()
     };
   }
 }
