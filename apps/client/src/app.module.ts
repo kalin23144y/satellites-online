@@ -10,6 +10,7 @@ import { MinioModule } from "@libs/minio";
 import { TleModule } from "./service/tle/tle.module";
 import { CountryModule } from "./service/country/country.module";
 import { BullModule } from "@nestjs/bullmq";
+import { SatelliteModule } from './service/satellite/satellite.module';
 
 @Module({
   imports: [
@@ -59,7 +60,8 @@ import { BullModule } from "@nestjs/bullmq";
     }),
     UserAuthModule,
     TleModule,
-    CountryModule
+    CountryModule,
+    SatelliteModule
   ],
   controllers: [AppController],
   providers: [AppService]

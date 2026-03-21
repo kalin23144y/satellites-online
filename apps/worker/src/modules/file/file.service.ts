@@ -40,7 +40,9 @@ export class FileService {
     }
 
     const objectStream = await this.minio.getObject(MinioKeys.tle, `${fileId}.txt`);
+    console.log('objectStream', objectStream)
     const fileContent = await this.streamToString(objectStream);
+    console.log('fileContent', fileContent)
     const tleRecords = await this.parseTleContent(fileContent);
 
     await this.prisma.tleRecord.deleteMany({
