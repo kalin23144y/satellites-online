@@ -107,10 +107,39 @@ export class SatelliteCatalogService {
         throw new Error(`SATCAT request failed with status ${response.status}`);
       }
 
-      const payload = await this.safeJsonArray(response);
+      const rows = await this.safeJsonArray(response);
+      // console.log(rows);
+      const row = rows[0] as SatcatDto | undefined;
+      if (!row?.NORAD_CAT_ID) {
+        return null;
+      }
 
-      console.log(payload);
-      return (payload[0] as SatcatRecord | undefined) ?? null;
+      await this.prisma.satcat.create({
+        data: {
+          noradCatId: row.NORAD_CAT_ID,
+          objectName: String(row.OBJECT_NAME),
+          objectId: String(row.OBJECT_ID),
+          objectType: String(row.OBJECT_TYPE),
+          opsStatusCode: String(row.OPS_STATUS_CODE),
+          owner: String(row.OWNER),
+          launchDate: String(row.LAUNCH_DATE),
+          launchSite: String(row.LAUNCH_SITE),
+          decayDate: String(row.DECAY_DATE),
+          period: Number(row.PERIOD) || 0,
+          inclination: Number(row.INCLINATION) || 0,
+          apogee: Number(row.APOGEE) || 0,
+          perigee: Number(row.PERIGEE) || 0,
+          rcs: row.RCS == null ? null : Number(row.RCS),
+          dataStatusCode: String(row.DATA_STATUS_CODE),
+          orbitCenter: String(row.ORBIT_CENTER),
+          orbitType: String(row.ORBIT_TYPE)
+        }
+      });
+
+      return {
+        OBJECT_NAME: row.OBJECT_NAME,
+        OBJECT_TYPE: row.OBJECT_TYPE
+      };
     });
 
     this.satcatCache.set(noradId, recordPromise);
@@ -120,7 +149,7 @@ export class SatelliteCatalogService {
   async parsSatcatRecord(limit: number, offset: number) {
     for (let i = offset; i < offset + limit; i++) {
       const url = `https://celestrak.org/satcat/records.php?CATNR=${i}&FORMAT=JSON`;
-      console.log(url);
+      // console.log(url);
 
       const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
       if (!response.ok) {
@@ -128,7 +157,7 @@ export class SatelliteCatalogService {
       }
 
       const rows = await this.safeJsonArray(response);
-      console.log(rows);
+      // console.log(rows);
       const row = rows[0] as SatcatDto | undefined;
       if (!row?.NORAD_CAT_ID) {
         continue;
