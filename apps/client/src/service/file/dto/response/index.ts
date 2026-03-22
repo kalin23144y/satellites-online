@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { FileStatus } from "node_modules/@libs/database/src/generated/prisma/enums";
 
 export class FileDto {
   @ApiProperty({
@@ -15,6 +16,11 @@ export class FileDto {
     type: Boolean
   })
   isActive: boolean;
+
+  @ApiProperty({
+    enum: FileStatus
+  })
+  status: FileStatus;
 }
 
 export class GetFilesResponseDto {

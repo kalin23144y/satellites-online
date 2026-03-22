@@ -20,7 +20,8 @@ export class FileService {
       files: files.map((file) => ({
         id: file.id,
         name: file.name,
-        isActive: file.isActive
+        isActive: file.isActive,
+        status: file.status
       }))
     };
   }
@@ -44,7 +45,8 @@ export class FileService {
       file: {
         id: file.id,
         name: file.name,
-        isActive: file.isActive
+        isActive: file.isActive,
+        status: file.status
       }
     };
   }
@@ -58,7 +60,8 @@ export class FileService {
       file: {
         id: file.id,
         name: file.name,
-        isActive: file.isActive
+        isActive: file.isActive,
+        status: file.status
       }
     };
   }
