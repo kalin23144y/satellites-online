@@ -102,6 +102,27 @@ export class FileService {
       });
     }
 
+    const _file = await this.prisma.file.update({
+      where: { id: fileId},
+      data: {
+        isActive: true
+      },
+      select: {
+        id: true
+      }
+    })
+
+    await this.prisma.file.updateMany({
+      where: {
+        id: {
+          not: fileId,
+        }
+      },
+      data: {
+        isActive: false
+      }
+    })
+
     return {
       fileId,
       parsedCount: tleRecords.length
