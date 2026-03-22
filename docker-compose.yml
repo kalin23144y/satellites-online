@@ -101,12 +101,6 @@ services:
       - MINIO_FORCE_PATH_STYLE=false
     ports:
       - "${APP_CLIENT_PORT:-3001}:3001"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.my-app.rule=Host(`back.thecreatorq.ru`)"
-      - "traefik.http.routers.my-app.entrypoints=websecure"
-      - "traefik.http.routers.my-app.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.my-app.tls=true"
     networks:
       - app-network
       - webnet
