@@ -107,6 +107,7 @@ export const FileScalarFieldEnum = {
   id: 'id',
   name: 'name',
   userId: 'userId',
+  status: 'status',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

@@ -39,94 +39,106 @@ export class FileService {
       throw new Error(`File with id "${fileId}" not found`);
     }
 
-    const objectStream = await this.minio.getObject(MinioKeys.tle, `${fileId}.txt`);
-    console.log("objectStream", objectStream);
-    const fileContent = await this.streamToString(objectStream);
-    console.log("fileContent", fileContent);
-    const tleRecords = await this.parseTleContent(fileContent);
+    try {
+      const objectStream = await this.minio.getObject(MinioKeys.tle, `${fileId}.txt`);
+      console.log("objectStream", objectStream);
+      const fileContent = await this.streamToString(objectStream);
+      console.log("fileContent", fileContent);
+      const tleRecords = await this.parseTleContent(fileContent);
 
-    await this.prisma.tleRecord.deleteMany({
-      where: {
-        source: fileId
-      }
-    });
+      await this.prisma.tleRecord.deleteMany({
+        where: {
+          source: fileId
+        }
+      });
 
-    for (const record of tleRecords) {
-      let country: Country | null = null;
-      if (record.country) {
-        const countryName = record.country?.trim();
-        country = await this.prisma.country.findFirst({
-          where: {
-            code: countryName
+      for (const record of tleRecords) {
+        let country: Country | null = null;
+        if (record.country) {
+          const countryName = record.country?.trim();
+          country = await this.prisma.country.findFirst({
+            where: {
+              code: countryName
+            }
+          });
+
+          if (!country) {
+            country = await this.prisma.country.create({
+              data: {
+                name: countryName,
+                code: countryName,
+                color: "#000000"
+              }
+            });
+          }
+        }
+
+        const satellite = await this.prisma.satellite.create({
+          data: {
+            noradId: record.noradId,
+            name: record.name,
+            operator: record.operator,
+            countryId: country && country.id ? country.id : undefined,
+            purpose: record.purpose,
+            groupName: record.groupName,
+            inclination: record.inclination,
+            periodMin: record.periodMin,
+            altitudeKm: record.altitudeKm,
+            orbitClass: record.orbitClass,
+            fileId
+          },
+          select: {
+            id: true
           }
         });
 
-        if (!country) {
-          country = await this.prisma.country.create({
-            data: {
-              name: countryName,
-              code: countryName,
-              color: "#000000"
-            }
-          });
-        }
+        await this.prisma.tleRecord.create({
+          data: {
+            satelliteId: satellite.id,
+            line1: record.line1,
+            line2: record.line2,
+            epoch: record.epoch,
+            source: fileId
+          }
+        });
       }
 
-      const satellite = await this.prisma.satellite.create({
+      await this.prisma.file.update({
+        where: { id: fileId },
         data: {
-          noradId: record.noradId,
-          name: record.name,
-          operator: record.operator,
-          countryId: country && country.id ? country.id : undefined,
-          purpose: record.purpose,
-          groupName: record.groupName,
-          inclination: record.inclination,
-          periodMin: record.periodMin,
-          altitudeKm: record.altitudeKm,
-          orbitClass: record.orbitClass,
-          fileId
+          isActive: true,
+          status: "parsed"
         },
         select: {
           id: true
         }
       });
 
-      await this.prisma.tleRecord.create({
+      await this.prisma.file.updateMany({
+        where: {
+          id: {
+            not: fileId
+          }
+        },
         data: {
-          satelliteId: satellite.id,
-          line1: record.line1,
-          line2: record.line2,
-          epoch: record.epoch,
-          source: fileId
+          isActive: false
         }
       });
-    }
 
-    const _file = await this.prisma.file.update({
-      where: { id: fileId},
-      data: {
-        isActive: true
-      },
-      select: {
-        id: true
-      }
-    })
-
-    await this.prisma.file.updateMany({
-      where: {
-        id: {
-          not: fileId,
+      return {
+        fileId,
+        parsedCount: tleRecords.length
+      };
+    } catch (error) {
+      await this.prisma.file.update({
+        where: { id: fileId },
+        data: {
+          status: "failed"
         }
-      },
-      data: {
-        isActive: false
-      }
-    })
+      });
 
-    return {
-      fileId,
-      parsedCount: tleRecords.length
-    };
+      throw error;
+    }
   }
 
   private async parseTleContent(content: string): Promise<ParsedTleRecord[]> {

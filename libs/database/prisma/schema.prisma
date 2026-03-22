@@ -17,10 +17,10 @@ model Admin {
 }
 
 model User {
-  id       String @id @default(uuid()) @db.Uuid
-  login    String @unique
-  password String
-  email    String @default("")
+  id        String @id @default(uuid()) @db.Uuid
+  login     String @unique
+  password  String
+  email     String @default("")
   firstName String @default("")
   lastName  String @default("")
   gender    String @default("")
@@ -31,11 +31,18 @@ model User {
   files     File[]
 }
 
+enum FileStatus {
+  inProgress
+  failed
+  parsed
+}
+
 model File {
-  id     String @id @default(uuid()) @db.Uuid
-  name   String @default("")
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @db.Uuid
+  id     String     @id @default(uuid()) @db.Uuid
+  name   String     @default("")
+  user   User       @relation(fields: [userId], references: [id])
+  userId String     @db.Uuid
+  status FileStatus @default(inProgress)
 
   isActive Boolean @default(false)
 

@@ -99,9 +99,26 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type EnumFileStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.FileStatus | Prisma.EnumFileStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFileStatusFilter<$PrismaModel> | $Enums.FileStatus
+}
+
 export type BoolFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+}
+
+export type EnumFileStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FileStatus | Prisma.EnumFileStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFileStatusWithAggregatesFilter<$PrismaModel> | $Enums.FileStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFileStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFileStatusFilter<$PrismaModel>
 }
 
 export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -348,9 +365,26 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type NestedEnumFileStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.FileStatus | Prisma.EnumFileStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFileStatusFilter<$PrismaModel> | $Enums.FileStatus
+}
+
 export type NestedBoolFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+}
+
+export type NestedEnumFileStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FileStatus | Prisma.EnumFileStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FileStatus[] | Prisma.ListEnumFileStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFileStatusWithAggregatesFilter<$PrismaModel> | $Enums.FileStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFileStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFileStatusFilter<$PrismaModel>
 }
 
 export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {

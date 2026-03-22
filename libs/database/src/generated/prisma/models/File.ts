@@ -28,6 +28,7 @@ export type FileMinAggregateOutputType = {
   id: string | null
   name: string | null
   userId: string | null
+  status: $Enums.FileStatus | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -37,6 +38,7 @@ export type FileMaxAggregateOutputType = {
   id: string | null
   name: string | null
   userId: string | null
+  status: $Enums.FileStatus | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -46,6 +48,7 @@ export type FileCountAggregateOutputType = {
   id: number
   name: number
   userId: number
+  status: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -57,6 +60,7 @@ export type FileMinAggregateInputType = {
   id?: true
   name?: true
   userId?: true
+  status?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -66,6 +70,7 @@ export type FileMaxAggregateInputType = {
   id?: true
   name?: true
   userId?: true
+  status?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -75,6 +80,7 @@ export type FileCountAggregateInputType = {
   id?: true
   name?: true
   userId?: true
+  status?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -157,6 +163,7 @@ export type FileGroupByOutputType = {
   id: string
   name: string
   userId: string
+  status: $Enums.FileStatus
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -187,6 +194,7 @@ export type FileWhereInput = {
   id?: Prisma.UuidFilter<"File"> | string
   name?: Prisma.StringFilter<"File"> | string
   userId?: Prisma.UuidFilter<"File"> | string
+  status?: Prisma.EnumFileStatusFilter<"File"> | $Enums.FileStatus
   isActive?: Prisma.BoolFilter<"File"> | boolean
   createdAt?: Prisma.DateTimeFilter<"File"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"File"> | Date | string
@@ -198,6 +206,7 @@ export type FileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -212,6 +221,7 @@ export type FileWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.FileWhereInput | Prisma.FileWhereInput[]
   name?: Prisma.StringFilter<"File"> | string
   userId?: Prisma.UuidFilter<"File"> | string
+  status?: Prisma.EnumFileStatusFilter<"File"> | $Enums.FileStatus
   isActive?: Prisma.BoolFilter<"File"> | boolean
   createdAt?: Prisma.DateTimeFilter<"File"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"File"> | Date | string
@@ -223,6 +233,7 @@ export type FileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -238,6 +249,7 @@ export type FileScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"File"> | string
   name?: Prisma.StringWithAggregatesFilter<"File"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"File"> | string
+  status?: Prisma.EnumFileStatusWithAggregatesFilter<"File"> | $Enums.FileStatus
   isActive?: Prisma.BoolWithAggregatesFilter<"File"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"File"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"File"> | Date | string
@@ -246,6 +258,7 @@ export type FileScalarWhereWithAggregatesInput = {
 export type FileCreateInput = {
   id?: string
   name?: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -257,6 +270,7 @@ export type FileUncheckedCreateInput = {
   id?: string
   name?: string
   userId: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -266,6 +280,7 @@ export type FileUncheckedCreateInput = {
 export type FileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -277,6 +292,7 @@ export type FileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -287,6 +303,7 @@ export type FileCreateManyInput = {
   id?: string
   name?: string
   userId: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -295,6 +312,7 @@ export type FileCreateManyInput = {
 export type FileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -304,6 +322,7 @@ export type FileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -323,6 +342,7 @@ export type FileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -332,6 +352,7 @@ export type FileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -341,6 +362,7 @@ export type FileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -393,6 +415,10 @@ export type FileUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.FileScalarWhereInput | Prisma.FileScalarWhereInput[]
 }
 
+export type EnumFileStatusFieldUpdateOperationsInput = {
+  set?: $Enums.FileStatus
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -416,6 +442,7 @@ export type FileUpdateOneWithoutSattellitesNestedInput = {
 export type FileCreateWithoutUserInput = {
   id?: string
   name?: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -425,6 +452,7 @@ export type FileCreateWithoutUserInput = {
 export type FileUncheckedCreateWithoutUserInput = {
   id?: string
   name?: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -464,6 +492,7 @@ export type FileScalarWhereInput = {
   id?: Prisma.UuidFilter<"File"> | string
   name?: Prisma.StringFilter<"File"> | string
   userId?: Prisma.UuidFilter<"File"> | string
+  status?: Prisma.EnumFileStatusFilter<"File"> | $Enums.FileStatus
   isActive?: Prisma.BoolFilter<"File"> | boolean
   createdAt?: Prisma.DateTimeFilter<"File"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"File"> | Date | string
@@ -472,6 +501,7 @@ export type FileScalarWhereInput = {
 export type FileCreateWithoutSattellitesInput = {
   id?: string
   name?: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -482,6 +512,7 @@ export type FileUncheckedCreateWithoutSattellitesInput = {
   id?: string
   name?: string
   userId: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -506,6 +537,7 @@ export type FileUpdateToOneWithWhereWithoutSattellitesInput = {
 export type FileUpdateWithoutSattellitesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -516,6 +548,7 @@ export type FileUncheckedUpdateWithoutSattellitesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -524,6 +557,7 @@ export type FileUncheckedUpdateWithoutSattellitesInput = {
 export type FileCreateManyUserInput = {
   id?: string
   name?: string
+  status?: $Enums.FileStatus
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -532,6 +566,7 @@ export type FileCreateManyUserInput = {
 export type FileUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -541,6 +576,7 @@ export type FileUpdateWithoutUserInput = {
 export type FileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -550,6 +586,7 @@ export type FileUncheckedUpdateWithoutUserInput = {
 export type FileUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumFileStatusFieldUpdateOperationsInput | $Enums.FileStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -590,6 +627,7 @@ export type FileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   name?: boolean
   userId?: boolean
+  status?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -602,6 +640,7 @@ export type FileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   name?: boolean
   userId?: boolean
+  status?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -612,6 +651,7 @@ export type FileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   name?: boolean
   userId?: boolean
+  status?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -622,12 +662,13 @@ export type FileSelectScalar = {
   id?: boolean
   name?: boolean
   userId?: boolean
+  status?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "userId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["file"]>
+export type FileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "userId" | "status" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["file"]>
 export type FileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   sattellites?: boolean | Prisma.File$sattellitesArgs<ExtArgs>
@@ -650,6 +691,7 @@ export type $FilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     name: string
     userId: string
+    status: $Enums.FileStatus
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1081,6 +1123,7 @@ export interface FileFieldRefs {
   readonly id: Prisma.FieldRef<"File", 'String'>
   readonly name: Prisma.FieldRef<"File", 'String'>
   readonly userId: Prisma.FieldRef<"File", 'String'>
+  readonly status: Prisma.FieldRef<"File", 'FileStatus'>
   readonly isActive: Prisma.FieldRef<"File", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"File", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"File", 'DateTime'>
